@@ -28,13 +28,15 @@ class Complain(models.Model):
     status=(
         (1,'Pending'),
         (2,'Processing'),
-        (3,'Responsed')
+        (3,'Responsed'),
+        (4,'Rejected'),
     )
     priority=(
         (1,'Normal'),
         (2,'Urgent'),
         (3,'Very Urgent'),
     )
+    id=models.AutoField(primary_key=True)
     ticket_no=models.CharField(max_length=20)
     complain_category = models.ForeignKey(ComplainCategory,on_delete=models.CASCADE,related_name='complain')
     complain_sub_category=models.ForeignKey(ComplainSubCategory,on_delete=models.CASCADE,null=True,related_name='complain_sub_category')
@@ -60,7 +62,8 @@ class Complain(models.Model):
     def save(self, *args, **kwargs):
         if not self.ticket_no:
             category_id = self.complain_category.id if self.complain_category else 'NA'
-            self.ticket_no = f'DFTQC-C{category_id}-{self.id}'
+            complain_id = Complain.objects.count() + 1
+            self.ticket_no = f'DFTQC-C{category_id}-{complain_id}'
 
         super(Complain, self).save(*args, **kwargs)
     def get_status(self):
@@ -68,6 +71,8 @@ class Complain(models.Model):
             return 'Pending'
         elif self.complain_status == 3:
             return 'Responded'
+        elif self.complain_status == 4:
+            return "Rejected"
         else:
             return 'Processing'
         

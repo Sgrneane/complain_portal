@@ -1111,6 +1111,22 @@ body {
   color: var(--white);
 }
 
+/* create category page css  */
+.create-category-page-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.category-create-btn-div {
+  display: flex;
+}
+.create-btns {
+  width: 20%;
+  margin: 20px 10px;
+  font-size: 17px;
+  font-weight: 500;
+  background-color: var(--primary-color);
+}
 /* complain view page of general user  */
 
 .response-container {
@@ -1124,7 +1140,8 @@ body {
 .edit-page-btn-div {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: right;
+  margin-right: 60px;
 }
 
 /* mobile view responsive  */

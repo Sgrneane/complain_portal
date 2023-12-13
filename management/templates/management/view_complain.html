@@ -236,9 +236,11 @@
     {% endif %}
     {% if request.user.role == 2 or request.user.role == 3%}
     <div class="complain-btn-div">
+      {% if not complain.response.exists %}
       <button type="submit" id="submit"
         class="btn btn-primary complain-btns complain-response-btns btn-lg"
         data-bs-toggle="modal" data-bs-target="#responseModal">Response</button>
+        {% endif %}
       {% if not complain.assigned_to %}
       <button type="submit" id="submit"
         class="btn btn-primary complain-btns complain-response-btns btn-lg"
@@ -252,34 +254,36 @@
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
+            {% comment %} form for creating complains {% endcomment %}
+           <form action="{% url 'management:response' id=complain.id %}" method="post">
+            {% csrf_token %}
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">Response
                 Complain</h1>
             </div>
             <div class="modal-body">
-              <form>
                 <div class="mb-3">
                   <label for="message-text" class="col-form-label">Response
                     Message:</label>
-                  <textarea class="form-control" id="message-text"></textarea>
+                  <textarea class="form-control" id="message-text" name='response_message'></textarea>
                 </div>
                 <div class="mb-3">
                   <label for="formFileSm" class="form-label">Image or file (if
                     any)</label>
                   <input class="form-control file-upload-field form-control-sm"
-                    id="formFileSm" type="file" />
+                    id="formFileSm" type="file" name='response_image' />
                 </div>
-              </form>
             </div>
             <div class="modal-footer response-modal-footer">
               <button type="button" class="btn btn-secondary"
                 data-bs-dismiss="modal">Cancle</button>
               <div class="btn-left-align">
-                <button type="button" class="btn btn-danger">Reject</button>
-                <button type="button"
-                  class="btn btn-primary complain-response-btns">Response</button>
+                <button type="submit" class="btn btn-danger" name='reject'>Reject</button>
+                <button type="submit"
+                  class="btn btn-primary complain-response-btns" name='response'>Response</button>
               </div>
             </div>
+          </form>
           </div>
         </div>
       </div>

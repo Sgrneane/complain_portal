@@ -5,10 +5,18 @@
         <div class="container user-page-heading-container">
           <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#">Category</a></li>
+              <li class="breadcrumb-item"><a href="#">Categories</a></li>
               <li class="breadcrumb-item active_breadcrumb active" aria-current="page">Category Lists</li>
             </ol>
           </nav>
+          <div class="category-create-btn-div">
+            <a href="{% url 'management:create_sub_category' %}">
+              <button type="button " class="btn btn-primary login_btn">Create Sub-Category</button>
+            </a>
+            <a href="{% url 'management:create_category'%}">
+              <button type="button " class="btn btn-primary login_btn">Create Category</button>
+            </a>
+          </div>
         </div>
       </section>
 
