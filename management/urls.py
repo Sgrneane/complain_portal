@@ -14,5 +14,8 @@ urlpatterns = [
     path('my-complains',views.my_complains,name='my_complains'),
     path('complain-view/<int:id>',views.view_complain,name='view_complain'),
     path('category-list',views.category_list,name='category_list'),
+    path('create-category',views.create_category,name='create_category'),
+    path('create-sub-category',views.create_sub_category, name='create_sub_category'),
     path('create-communication/<int:id>',views.create_communication,name='create_communication'),
+    path('response/<int:id>',views.response, name="response")
 ]

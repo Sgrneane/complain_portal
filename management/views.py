@@ -1,6 +1,6 @@
-from django.shortcuts import render,HttpResponse,get_object_or_404,get_list_or_404
+from django.shortcuts import render,HttpResponse,get_object_or_404,get_list_or_404,redirect
 from django.http import JsonResponse
-from .models import ComplainCategory,ComplainSubCategory, AnonymousUser,Complain, Communication
+from .models import ComplainCategory,ComplainSubCategory, AnonymousUser,Complain, Communication, Response
 from account.models import CustomUser
 
 # Create your views here.
@@ -9,6 +9,43 @@ def index(request):
 
 def user_dashboard(request):
     return render(request,'management/user_dashboard.html')
+
+def category_list(request):
+    categories = ComplainCategory.objects.prefetch_related('complainsubcategories').all()
+    context={
+        'categories':categories
+    }
+    return render(request,'management/category_list.html',context)
+def create_category(request):
+    if request.method =='POST':
+        print('hello')
+        category_name=request.POST.get('category_name', None)
+        print(category_name)
+        ComplainCategory.objects.create(
+            name=category_name
+        )
+        return redirect('management:category_list')
+    else:
+        return render(request,'management/create_category.html')
+
+def create_sub_category(request):
+    categories=ComplainCategory.objects.all()
+    context={
+        'categories':categories
+    }
+    if request.method=='POST':
+        sub_category_name=request.POST.get('sub_category_name',None)
+        category=int(request.POST.get('category_id',None))
+        print(category)
+        category=ComplainCategory.objects.get(id=category)
+        ComplainSubCategory.objects.create(
+            name=sub_category_name,
+            category=category,
+        )
+        return redirect('management:category_list')
+    else:
+        return render(request,'management/create_sub_category.html',context)
+
 
 def get_subcategories(request, category_id):
     subcategories = ComplainSubCategory.objects.filter(category_id=category_id)
@@ -142,15 +179,10 @@ def view_complain(request,id):
             complain.assigned_by=request.user
             complain.complain_status=2
             complain.save()
-            return render(request,'management/view_complain.html',context)
+            return redirect('management:view_complain')
     return render(request,'management/view_complain.html',context)
 
-def category_list(request):
-    categories = ComplainCategory.objects.prefetch_related('complainsubcategories').all()
-    context={
-        'categories':categories
-    }
-    return render(request,'management/category_list.html',context)
+
 
 def create_communication(request,id):
     complain=get_object_or_404(Complain,id=id)
@@ -171,5 +203,26 @@ def create_communication(request,id):
             'image':image
         }
         Communication.objects.create(**data)
-        return HttpResponse("success")
+        return redirect("management:view_complain")
     
+def response(request,id):
+    user=request.user
+    complain=Complain.objects.get(id=id)
+    if request.method=='POST':
+        message=request.POST.get('response_message',None)
+        image=request.POST.get('response_image',None)
+        if 'reject' in request.POST:
+            complain.complain_status = 4
+            complain.save()
+        if 'response' in request.POST:
+            complain.complain_status = 3
+            complain.save()
+        Response.objects.create(
+                created_by=user,
+                response_description=message,
+                complain=complain,
+                response_image=image,
+            )
+        return HttpResponse("responded")
+        
+        

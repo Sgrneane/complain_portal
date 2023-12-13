@@ -610,6 +610,91 @@ body {
 .dataTables_length {
   padding: 0px 0px 20px 0px;
 }
+
+.status-div-processing {
+  display: flex;
+  align-items: center;
+  background-color: #e6f2fc;
+  justify-content: center;
+  height: 40px;
+  border-radius: 50px;
+}
+.status-div-processing p {
+  margin: 0px;
+  color: #4994ec;
+  font-size: 15px;
+}
+.status-div-processing:hover {
+  background-color: #4286de;
+}
+.status-div-processing:hover p {
+  color: var(--white);
+}
+/* pending status  */
+
+.status-div-pending {
+  display: flex;
+  align-items: center;
+  background-color: #fef8e3;
+  justify-content: center;
+  height: 40px;
+  border-radius: 50px;
+}
+.status-div-pending p {
+  margin: 0px;
+  color: #f6c344;
+  font-size: 15px;
+}
+.status-div-pending:hover {
+  background-color: #f6c344;
+}
+.status-div-pending:hover p {
+  color: var(--white);
+}
+/* rejected status  */
+
+.status-div-rejected {
+  display: flex;
+  align-items: center;
+  background-color: #f4dada;
+  justify-content: center;
+  height: 40px;
+  border-radius: 50px;
+}
+.status-div-rejected p {
+  margin: 0px;
+  color: #b63831;
+  font-size: 15px;
+}
+.status-div-rejected:hover {
+  background-color: #b63831;
+}
+.status-div-rejected:hover p {
+  color: var(--white);
+}
+
+/* Complete Status */
+.status-div-completed {
+  display: flex;
+  align-items: center;
+  background-color: #e3f5e6;
+  justify-content: center;
+  height: 40px;
+  border-radius: 50px;
+}
+.status-div-completed p {
+  margin: 0px;
+  color: #5ac561;
+  font-size: 15px;
+}
+.status-div-completed:hover {
+  background-color: #5ac561;
+}
+
+.status-div-completed:hover p {
+  color: var(--white);
+}
+
 .action-btn-print {
   margin-right: 10px;
   width: 18%;
@@ -805,11 +890,8 @@ body {
   font-weight: 500;
 }
 
-/* complain-edit page css  */
+/* complain-detials page css  */
 
-.edit-page-heading-section {
-  padding: 30px 172px;
-}
 .complain-btn-div {
   display: flex;
   justify-content: end;
@@ -835,6 +917,8 @@ body {
 }
 
 .complain-response-btns {
+  font-size: 17px;
+  font-weight: 500;
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
@@ -869,6 +953,7 @@ body {
 }
 .select-file-form {
   margin-top: 30px;
+  margin-bottom: 0px !important;
   display: flex;
   gap: 30px;
 }
@@ -876,6 +961,10 @@ body {
   font-size: 17px;
   color: var(--primary-color);
   font-weight: 500;
+}
+.reply-btn-div {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .file-choose {
@@ -910,6 +999,7 @@ body {
 }
 
 .reply-form {
+  display: flex;
   align-items: center;
   gap: 18px;
 }
@@ -973,7 +1063,7 @@ body {
 
 /* create complain form page css  */
 .create-complain-page-container {
-  margin-top: 80px;
+  margin-top: 60px;
   margin-bottom: 50px;
 }
 
@@ -1019,4 +1109,45 @@ body {
 .action-btn-print-user:hover a {
   background-color: var(--primary-color);
   color: var(--white);
+}
+
+/* create category page css  */
+.create-category-page-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.category-create-btn-div {
+  display: flex;
+}
+.create-btns {
+  width: 20%;
+  margin: 20px 10px;
+  font-size: 17px;
+  font-weight: 500;
+  background-color: var(--primary-color);
+}
+/* complain view page of general user  */
+
+.response-container {
+  background-color: var(--white);
+  padding: 55px 60px 40px 60px;
+  border-radius: 8px;
+  margin-top: 45px;
+}
+
+/* edit details page  */
+.edit-page-btn-div {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-right: 60px;
+}
+
+/* mobile view responsive  */
+
+@media only screen and (max-width: 600px) {
+  .toggle_btn {
+    display: block;
+  }
 }

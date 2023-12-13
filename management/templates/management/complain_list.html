@@ -26,8 +26,8 @@
                 <th>Action</th>
               </tr>
             </thead>
-            {% for complain in complains %}
             <tbody>
+            {% for complain in complains %}
               <tr>
                 <td>{{ complain.id }}</td>
                 <td>{{ complain.ticket_no }}</td>
@@ -64,8 +64,8 @@
                   </div>
                 </td>
               </tr>
-            </tbody>
             {% endfor %}
+            </tbody>
           </table>
         </div>
       </section>
