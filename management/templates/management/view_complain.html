@@ -1,0 +1,334 @@
+{% load static %}
+{% include 'login_header.html' %}
+<main class="main-body">
+  <section class="user-detail-heading-section">
+    <div class="container user-page-heading-container">
+      <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="./complain-list.html">Complains</a></li>
+          <li class="breadcrumb-item 2nd-bc-item active" aria-current="page">Complain
+            List</li>
+          <li class="breadcrumb-item active_breadcrumb active"
+            aria-current="page">Complain Details</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+  <section class="details-section">
+    <div class="container detail-page-container">
+      <div class="row w-100">
+        <div class="col-md-12">
+          <div class="user-detail-heading">
+            <h3>User Details</h3>
+          </div>
+        </div>
+      </div>
+      {% if complain.created_by %}
+      <div class="row details-row">
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Name of the User</p>
+            <h5>{{ complain.created_by.first_name }} {{ complain.created_by.last_name }}</h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Email Address</p>
+            <h5>{{ complain.created_by.email }}</h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Phone Number</p>
+            <h5>{{ complain.created_by.phone_number }}</h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Category</p>
+            <h5>{{ complain.created_by.role }}</h5>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="row details-row">
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Name of the User</p>
+            <h5>{{ complain.is_anonymous.first_name }} {{ complain.is_anonymous.last_name }}</h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Phone Number</p>
+            <h5>{{ complain.is_anonymous.phone_number }}</h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Address</p>
+            <h5>{{ complain.is_anonymous.address }}</h5>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="row detial-heading w-100">
+        <div class="col-md-12">
+          <div class="user-detail-heading">
+            <h3>Complain Details</h3>
+          </div>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Complain Title</p>
+            <h5>{{ complain.complain_title }}</h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Ticket No.</p>
+            <h5>{{ complain.ticket_no }}</h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Complaint Address</p>
+            <h5>{{ complain.municipality }} Municipality Ward no. {{complain.ward_no }}, {{ complain.district }}, {{ complain.province}} Province </h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Category</p>
+            <h5>{{ complain.complain_category.name }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Sub-Category</p>
+            <h5>{{ complain.complain_sub_category.name }}</h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Complain Priority</p>
+            <h5>{{ complain.get_priority }}</h5>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Complain Secrecy</p>
+            {% if complain.complain_secrecy %}
+            <h5>Required</h5>
+            {% else %}
+            <h5> Not Required</h5>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="details-div">
+            <p>Complaint Type</p>
+            {% if complain.created_by %}
+            <h5>Registered</h5>
+            {% else %}
+            <h5>Anonymous</h5>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col-md-6">
+          <div class="details-div complain-desc">
+            <p>Complain Description</p>
+            <h5>{{ complain.complain_description }}</h5>
+          </div>
+        </div>
+        <div class="col-md-6">
+          {% if complain.complain_image %}
+          <div class="details-div">
+            <p>Complain Image</p>
+            <div class="complain-img-div">
+              <a href="{{ complain.complain_image.url }}" data-fancybox
+                data-caption="Single image">
+                <img src="{{ complain.complain_image.url }}" />
+              </a>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% if complain.complain_communication.exists or request.user.role == 4 %}
+    <div class="container chat-page-container">
+      <div class="row w-100">
+        <div class="col-md-12">
+          <div class="response-log-heading">
+            <h3>Response Log</h3>
+            <div class="assigned-to">
+              <p>Assigned To:</p>
+              <p>{{ complain.assigned_to.first_name }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% for communication in complain.complain_communication.all %}
+      {% if communication.communication_to == request.user %}
+      <div class="row mt-5">
+        <div class="col-md-12 sender-response-colu">
+          <div class="sender-response-img-div img-div">
+            <img src='{% static 'images/nepal-government.png' %}' alt />
+          </div>
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-12">
+                <div class="card-body">
+                  <p class="card-text">{{ communication.message | safe }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="row mt-5">
+        <div class="col-md-12 receiver-response-colu">
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-12">
+                <div class="card-body">
+                  <p class="card-text">{{ communication.message |safe }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="img-div">
+            <img src='{% static 'images/nepal-government.png' %}' alt />
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+      <div>
+      <form method= 'POST' class="reply-form" action="{% url 'management:create_communication' id=complain.id %}" enctype="multipart/form-data" >
+          {% csrf_token %}
+        <div class="row mt-5">
+          <div class="col-md-12 form-group">
+              <label for="exampleFormControlReply"
+                class="form-label reply-label">Reply:</label>
+                <textarea type="text" placeholder="Textarea" class="form-control quill-editor"  name="complain_message"></textarea>
+            <div class="mb-3 form-group select-file-form">
+              <label for="formFileSm" class="form-label">Photo:</label>
+              <input class="form-control file-choose form-control-sm"
+                id="formFileSm" type="file" name='communication_image' />
+            </div>
+          </div>
+        </div>
+        <div class="reply-btn-div">
+          <button type="submit" id="submit"
+            class="btn btn-primary complain-response-btns btn-lg">Reply</button>
+        </div>
+      </form>
+      </div>
+    </div>
+    {% endif %}
+    {% if request.user.role == 2 or request.user.role == 3%}
+    <div class="complain-btn-div">
+      <button type="submit" id="submit"
+        class="btn btn-primary complain-btns complain-response-btns btn-lg"
+        data-bs-toggle="modal" data-bs-target="#responseModal">Response</button>
+      {% if not complain.assigned_to %}
+      <button type="submit" id="submit"
+        class="btn btn-primary complain-btns complain-response-btns btn-lg"
+        data-bs-toggle="modal" data-bs-target="#forwardModal">Forward</button>
+      {% endif %}
+      <button type="submit" id="submit"
+        class="btn btn-primary complain-btns complain-print-btns btn-lg">Print</button>
+
+      <div class="modal fade" data-bs-backdrop="static" id="responseModal"
+        data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Response
+                Complain</h1>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label">Response
+                    Message:</label>
+                  <textarea class="form-control" id="message-text"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="formFileSm" class="form-label">Image or file (if
+                    any)</label>
+                  <input class="form-control file-upload-field form-control-sm"
+                    id="formFileSm" type="file" />
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer response-modal-footer">
+              <button type="button" class="btn btn-secondary"
+                data-bs-dismiss="modal">Cancle</button>
+              <div class="btn-left-align">
+                <button type="button" class="btn btn-danger">Reject</button>
+                <button type="button"
+                  class="btn btn-primary complain-response-btns">Response</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" data-bs-backdrop="static" id="forwardModal"
+        data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+          <div class="modal-content">
+            <form method="post"
+              action="{% url 'management:view_complain' id=complain.id %}">
+              {% csrf_token %}
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Forward
+                  Complain</h1>
+              </div>
+              <div class="modal-body">
+
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label">Add Message:</label>
+                  <textarea class="form-control" id="message-text"
+                    name="admin_message"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputCateogry"
+                    class="form-label anonymous-form-label">Forward to*</label>
+                  <select class="form-select"
+                    aria-label="Default select example" name="assigned_to">
+                    {% for cr in complain_reviewers %}
+                    <option value={{cr.id}}>{{cr}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer response-modal-footer">
+                <button type="button" class="btn btn-secondary"
+                  data-bs-dismiss="modal">Cancle</button>
+                <div class="btn-left-align">
+                  <button type="submit"
+                    class="btn btn-primary complain-response-btns"
+                    name="forward_button">Forward</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  </section>
+</main>
+{% include 'footer.html' %}

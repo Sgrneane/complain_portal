@@ -1,0 +1,73 @@
+{% load static %}
+{% include 'login_header.html' %}
+    <main class="main-body">
+      <section class="page-heading-section">
+        <div class="container user-page-heading-container">
+          <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Complains</a></li>
+              <li class="breadcrumb-item active_breadcrumb active" aria-current="page">Complain Lists</li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+
+      <section class="data-table-section">
+        <div class="container">
+          <table id="user-list" class="display user-view-table" data-ordering="false" bLengthChange="false" style="width: 100%">
+            <thead>
+              <tr>
+                <th>S.N</th>
+                <th>Ticket no.</th>
+                <th>Complain Title</th>
+                <th>Username</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            {% for complain in complains %}
+            <tbody>
+              <tr>
+                <td>{{ complain.id }}</td>
+                <td>{{ complain.ticket_no }}</td>
+                <td>{{ complain.complain_title }}</td>
+                {% if complain.created_by %}
+                <td>{{ complain.created_by.first_name }}</td>
+                {% else %}
+                <td>{{ complain.is_anonymous.first_name }}</td>
+                {% endif %}
+                <td>{{ complain.complain_category }}</td>
+                <td>{{ complain.get_status }}</td>
+                <td>
+                  <div class="action-div">
+                    <div class="action-btn-view">
+                      <a href="{% url 'management:view_complain'  id=complain.id %}">
+                        <span class="material-symbols-outlined"> visibility </span>
+                      </a>
+                    </div>
+                    <div class="action-btn-response">
+                      <a href="#" data-bs-toggle="modal" data-bs-target="#responseModal">
+                        <span class="material-symbols-outlined"> chat_bubble </span>
+                      </a>
+                    </div>
+                    <div class="action-btn-forward">
+                      <a href="#" data-bs-toggle="modal" data-bs-target="#forwardModal">
+                        <span class="material-symbols-outlined"> arrow_forward </span>
+                      </a>
+                    </div>
+                    <div class="action-btn-print">
+                      <a href="#">
+                        <span class="material-symbols-outlined"> print </span>
+                      </a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+        </div>
+      </section>
+    </main>
+    {% include 'footer.html' %}

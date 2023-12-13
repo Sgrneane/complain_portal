@@ -1,0 +1,51 @@
+{% load static %}
+{% include 'header.html' %}
+<main class="main-body">
+    <div class="container login-page-container">
+      <div class="row">
+        <div class="col-md-6 login-form-colu">
+          <div class="login-form-div">
+            <div class="form-head">
+              <h3 class="login-heading">Login to your Account</h3>
+              <p>Please enter your login credentials below.</p>
+            </div>
+            {% for message in messages %}
+                    {{ message }}
+                   {% endfor %}
+            <form method="post" class="login_form" role="form" action="{% url 'account:login' %}">
+                {% csrf_token %}
+              <div class="form-group">
+                <label for="exampleInputEmail1" class="form-label login-form-label">Email/Username/Phone (इमेल/युजरनेम/फोन नम्बर)*</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" name="email" placeholder="Enter your Email/Username/Phone number" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword" class="form-label login-form-label">Password (पासवर्ड)*</label>
+                <input type="password" class="form-control" id="exampleInputPassword" name="password" placeholder="Enter your Password" />
+              </div>
+              <button class="btn btn-primary login-page-btn btn-lg">LogIn</button>
+            </form>
+            <div class="link mt-3">
+              <a class="forget-pass" href="forgetten password.html">Forgot Password?</a>
+              <span>Don't have an account?</span>
+              <a href='{% url 'account:signup' %}'>
+                <button class="btn register-btn btn-primary">Register</button>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 information-colu">
+          <div class="information-div">
+            <h4 class="information-heading">Web enabled complaint-portal helps you to complain about your services to dftqc office directly</h4>
+            <ul class="info-list">
+              <li class="lists">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit odit rem doloremque sunt molestias voluptas nemo saepe? Reiciendis, ducimus aliquam, deserunt porro sapiente minima necessitatibus molestiae consectetur nobis alias a!</li>
+              <li class="lists">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit odit rem doloremque sunt molestias voluptas nemo saepe? Reiciendis, ducimus aliquam, deserunt porro sapiente minima necessitatibus molestiae consectetur nobis alias a!</li>
+              <li class="lists">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit odit rem doloremque sunt molestias voluptas nemo saepe? Reiciendis, ducimus aliquam, deserunt porro sapiente minima necessitatibus molestiae consectetur nobis alias a!</li>
+              <li class="lists">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit odit rem doloremque sunt molestias voluptas nemo saepe? Reiciendis, ducimus aliquam, deserunt porro sapiente minima necessitatibus molestiae consectetur nobis alias a!</li>
+              <li class="lists">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit odit rem doloremque sunt molestias voluptas nemo saepe? Reiciendis, ducimus aliquam, deserunt porro sapiente minima necessitatibus molestiae consectetur nobis alias a!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  {% include 'footer.html' %}

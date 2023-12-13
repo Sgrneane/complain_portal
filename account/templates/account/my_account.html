@@ -1,0 +1,49 @@
+{% load static %}
+{% include 'login_header.html' %}
+
+    <main>
+      <section class="page-heading-section">
+        <div class="container page-heading-container">
+          <div class="page-heading-div">
+            <h3 class="page-heading">My Account ( मेरो खाता )</h3>
+          </div>
+        </div>
+      </section>
+      <section class="profile-section">
+        <div class="container profile-container">
+          <div class="user-profile-row">
+            <div class="user-profile">
+              <div class="user-icon">a</div>
+              <div class="user-profile-details">
+                <h2>admin</h2>
+                <p class="user-info">
+                  <span>Role:</span>
+                  {{ request.user.role }}
+                </p>
+                <p class="user-info">
+                  <span>Username:</span>
+                 {{ request.user.username }}
+                </p>
+                <p class="user-info">
+                  <span>Email:</span>
+                  {{ request.user.email }}
+                </p>
+                <p class="user-info">
+                  <span>Mobile No:</span>
+                  {{ request.user.phone_number }}
+                </p>
+              </div>
+            </div>
+            <div class="edit-info-btn-div">
+              <div class="edit-info-btn">
+                <a class="edit-profile-btn" href="#"><span class="material-symbols-outlined"> edit </span>Edit Info</a>
+              </div>
+              <div class="edit-info-btn">
+                <a class="chng-pass-btn" href="#"><span class="material-symbols-outlined"> page_info </span>Change Password</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+ {% include 'footer.html' %}
