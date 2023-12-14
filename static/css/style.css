@@ -253,7 +253,7 @@ body {
   font-weight: 400;
 }
 .form-control {
-  height: 50px;
+  height: 40px;
   margin-bottom: 20px;
 }
 .form-control:hover {
@@ -328,9 +328,10 @@ body {
   font-weight: 600;
   line-height: 24px;
   margin-bottom: 5px;
+  padding: 0px;
 }
 .form-select {
-  height: 50px;
+  height: 40px;
   margin-bottom: 20px;
 }
 
@@ -410,14 +411,18 @@ body {
   margin: 0px 100px;
 }
 .anonymous-form-head {
-  width: 90%;
-  margin: 0px 0px 20px 10px;
+  width: 100%;
+  margin: 0px 0px 20px 0px;
+}
+.complain-details-form-head {
+  width: 100%;
+  margin: 35px 0px 20px 0px;
+  padding: 0px;
 }
 .anonymous-form {
   background-color: #f8faff;
   border: 1px solid #d2d2d2;
   padding: 20px;
-  width: 90%;
 }
 .anonymous-form:hover {
   background-color: none;
@@ -449,7 +454,7 @@ body {
 }
 .submit-btn-div {
   display: flex;
-  justify-content: center;
+  justify-content: right;
 }
 
 /* super admin user list table page  */
@@ -1015,42 +1020,7 @@ body {
   height: 80px;
 }
 /* category and sub category list of super admin  */
-.category1-header {
-  position: relative !important;
-}
-.category2-header {
-  position: relative !important;
-}
-.category3-header {
-  position: relative !important;
-}
-.accordion-button:focus {
-  box-shadow: none !important;
-}
-.category1-btn-container {
-  width: 20%;
-  position: absolute;
-  right: 4%;
-  top: 20%;
-  justify-content: flex-end;
-  z-index: 11;
-}
-.category2-btn-container {
-  width: 20%;
-  position: absolute;
-  right: 4%;
-  top: 20%;
-  justify-content: flex-end;
-  z-index: 11;
-}
-.category3-btn-container {
-  width: 20%;
-  position: absolute;
-  right: 4%;
-  top: 20%;
-  justify-content: flex-end;
-  z-index: 11;
-}
+
 .table tr {
   text-align: center;
 }

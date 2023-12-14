@@ -18,10 +18,6 @@
         <div class="top-header-div">
           <img src='{% static 'images/nepal-government.png' %}' alt="logo" />
           <img src='{% static 'images/nepalflag.gif'%}' alt="" />
-          <!-- <div class="logout-div">
-            <a href="#"><span class="material-symbols-outlined"> logout </span> </a>
-            <a href="#" class="logout">logout</a>
-          </div> -->
         </div>
       </div>
       <section class="nav-container">
@@ -54,9 +50,14 @@
                         </li>
                       </ul>
                     </div>
-                    <div class="login-div">
+                    <div class="login-div dropdown">
                       <a href='{% url 'account:logout_user' %}'><span class="material-symbols-outlined"> logout </span> </a>
-                      <a href='{% url 'account:logout_user' %}' class="login">logout</a>
+                      <a href='{% url 'account:logout_user' %}' class="login dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" role="button">logout</a>
+                     <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Logout</a></li>
+                      <li><a class="dropdown-item" href="#">My Profile</a></li>
+                    </ul>
+
                     </div>
                   </div>
                 </nav>

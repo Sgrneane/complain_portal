@@ -1030,8 +1030,8 @@ body {
 .category1-btn-container {
   width: 20%;
   position: absolute;
-  right: 4%;
-  top: 20%;
+  right: 8%;
+  top: 36.3%;
   justify-content: flex-end;
   z-index: 11;
 }
