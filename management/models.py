@@ -2,6 +2,10 @@ from django.db import models
 from account.models import CustomUser
 
 # Create your models here.
+class ComplainBroadCategery(models.Model):
+    name=models.CharField(max_length=50)
+    def __str__(self):
+        return self.name
 class ComplainCategory(models.Model):
     name=models.CharField(max_length=60,unique=True)
 
@@ -38,7 +42,8 @@ class Complain(models.Model):
     )
     id=models.AutoField(primary_key=True)
     ticket_no=models.CharField(max_length=20)
-    complain_category = models.ForeignKey(ComplainCategory,on_delete=models.CASCADE,related_name='complain')
+    #complain_broad_category= models.ForeignKey(ComplainBroadCategery,on_delete=models.CASCADE,related_name='broad_category')
+    complain_category = models.ForeignKey(ComplainCategory,on_delete=models.CASCADE,related_name='complain',null=True)
     complain_sub_category=models.ForeignKey(ComplainSubCategory,on_delete=models.CASCADE,null=True,related_name='complain_sub_category')
     complain_title=models.CharField(max_length=300)
     complain_description=models.TextField()

@@ -160,7 +160,37 @@
           {% endif %}
         </div>
       </div>
+      {% if complain.response.exists %}
+      <div class="row detial-heading w-100">
+        <div class="col-md-12">
+          <div class="user-detail-heading">
+            <h3>Response Details</h3>
+          </div>
+        </div>
+      </div>
+      <div class="row details-row">
+        <div class="col-md-6">
+          <div class="details-div complain-desc">
+            <p>Response Description</p>
+            <h5>{{ complain.response.description }}</h5>
+          </div>
+        </div>
+        <div class="col-md-6">
+          {% if complain.response.response_image %}
+          <div class="details-div">
+            <p>Response Image</p>
+            <div class="complain-img-div">
+              <a href="{{ complain.response.response_image.url }}" data-fancybox
+                data-caption="Single image">
+                <img src="{{ complain.response.response_image.url }}" />
+              </a>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      {% endif %}
     </div>
+    
     {% if complain.complain_communication.exists or request.user.role == 4 %}
     <div class="container chat-page-container">
       <div class="row w-100">

@@ -19,7 +19,7 @@ def signup(request):
         form = SignupForm(request.POST)
         
         if form.is_valid():
-            email = form.cleaned_data['email']
+            email = form.cleaned_data['email'].lower()
             username = form.cleaned_data['username']
             phone = str(form.cleaned_data['phone_number'])
             # password = form.cleaned_data['password']

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-tb)x!8%3gjmi8p-1o68^vu216l*0acz7m^jb%=&m2mj+@#yzf#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.76']
+ALLOWED_HOSTS = ['192.168.1.76','127.0.0.1']
 
 
 # Application definition
@@ -83,10 +83,24 @@ WSGI_APPLICATION = 'FQC.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'complain-portal', #lims_new
+        'USER': 'root',
+        'PASSWORD':'',
+        'HOST':'localhost',
+        'PORT': '3308',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        }
     }
 }
 

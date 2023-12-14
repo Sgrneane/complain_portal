@@ -156,7 +156,7 @@ def all_complains(request):
     return render(request,'management/complain_list.html',context)
 
 def my_complains(request):
-    complains=get_list_or_404(Complain,created_by=request.user)
+    complains=Complain.objects.filter(created_by=request.user)
     context={
         'complains':complains
     }
@@ -173,6 +173,8 @@ def view_complain(request,id):
         if 'forward_button' in request.POST:
             admin_message=request.POST.get('admin_message',None)
             assigned_to=int(request.POST.get('assigned_to',None))
+            complain_category=request.POST.get('complain_category',None)
+            complain_sub_category=request.POST.get('complain_sub_category',None)
             customuser_instance=CustomUser.objects.get(id=assigned_to)
             complain.admin_message=admin_message
             complain.assigned_to=customuser_instance
