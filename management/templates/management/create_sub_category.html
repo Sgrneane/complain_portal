@@ -1,0 +1,37 @@
+{% load static %}
+{% include 'login_header.html' %}
+    <main>
+      <div class="container create-category-page-container">
+        <div class="row anonymous-row">
+          <div class="col-md-12 login-form-colu">
+            <form method="post" class="card anonymous-form" role="form" action="{% url 'management:create_sub_category' %}">
+              {% csrf_token %}
+            <div class="form-div complain-details-form-div">
+              <div class="anonymous-form-head">
+                <h3 class="register-heading">Create Sub-Category</h3>
+              </div>
+                <div class="row">
+                  <div class="col form-group">
+                    <label for="categoryName" class="form-label anonymous-form-label">Sub-Category Name *</label>
+                    <input type="text" class="form-control" id="categoryName" placeholder=" Enter category name" aria-label="Category name" name="sub_category_name" />
+                  </div>
+                  <div class="col form-group">
+                    <label for="subCategoryName" class="form-label anonymous-form-label">Category *</label>
+                    <select class="form-select" aria-label="Default select example" id="subCategoryName" name="category_id">
+                      {% for category in categories %}
+                      <option value="{{ category.id }}">{{ category.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+             
+            </div>
+            <div class="edit-page-btn-div">
+              <button type="submit" id="submit" class="btn btn-primary create-btns btn-lg">Create</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </main>
+{% include 'footer.html' %}

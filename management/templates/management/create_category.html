@@ -1,0 +1,45 @@
+{% load static %}
+{% include 'login_header.html' %}
+    <main>
+      <section class="page-heading-section">
+        <div class="container user-page-heading-container">
+          <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Categories</a></li>
+              <li class="breadcrumb-item active_breadcrumb active" aria-current="page">Category Lists</li>
+              <li class="breadcrumb-item active_breadcrumb active" aria-current="page">Create Category</li>
+            </ol>
+          </nav>
+          <div class="category-create-btn-div">
+            <a href="./sub-category-create.html">
+              <button type="button " class="btn btn-primary login_btn">Create Sub-Category</button>
+            </a>
+          </div>
+        </div>
+      </section>
+      <div class="container create-category-page-container">
+        <div class="row anonymous-row">
+          <div class="col-md-12 login-form-colu">
+            
+            <div class="form-div complain-details-form-div">
+              <div class="anonymous-form-head">
+                <h3 class="register-heading">Create Category</h3>
+              </div>
+              <form method="post" class="card anonymous-form" role="form" action="{% url 'management:create_category' %}">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col form-group">
+                    <label for="categoryName" class="form-label anonymous-form-label">Category Name *</label>
+                    <input type="text" class="form-control" id="categoryName" placeholder=" Enter category name" aria-label="Category name"  name="category_name" />
+                  </div>
+                </div>
+                <div class="edit-page-btn-div row">
+                  <button type="submit" id="submit" class="btn btn-primary create-btns btn-lg">Create</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+{% include 'footer.html' %}
