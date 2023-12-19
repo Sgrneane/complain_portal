@@ -1,68 +1,118 @@
+{% extends 'layout.html' %}
 {% load static %}
-{% include 'login_header.html' %}
-    <main>
-      <section class="create-user-section">
-        <div class="container">
-          <div class="row create-user-row">
-            <div class="col-md-12 login-form-colu">
-              <div class="form-div complain-details-form-div">
-                <div class="anonymous-form-head">
-                  <h3 class="register-heading">Create Admin</h3>
-                </div>
-                <form method="post" class="card anonymous-form" role="form" action="{% url 'account:create_admin'%}">
-                  {% csrf_token %}
-                  <div class="row">
-                    <div class="col form-group">
-                      <label for="firstname" class="form-label anonymous-form-label">First Name(नाम)*</label>
-                      <input type="text" class="form-control" id="firstname" placeholder=" Enter your First name" aria-label="First name" name="first_name"/>
+{% block content %}
+            <div class="col-md-9 my-profile-w-85">
+                <section id="tab-content-container">
+                    <div class="p-0">
+                        <div class="row">
+                            <div class="main-section-title">
+                                <a href="" class="section-title">User > <span style="color: #7a7a7a; font-size: 18px;"><small>Admin User > Create</small></span></a>
+                            </div>
+                            <hr class="main-section-hr">
+
+                            <div class="tab-content mt-4" id="myTabContent">
+                                {% if messages %}
+                                {% for message in messages %}
+                                {{ message }}
+                                {% endfor %}
+                                {% endif %}
+                                {% if form.instance %}
+                                <form action="{% url 'account:edit_user' id=form.instance.id %}" method="post">
+                                    {% else %}
+                                <form action="{% url 'account:create_admin' %}" method="post">
+                                    {%endif %}
+                                    {% csrf_token %}
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="" class="form-label mb-1 label cm">First Name( नाम )</label>
+                                            <input type="text" class="form-control cm"
+                                                placeholder="Enter first name" name="first_name"
+                                                {% if form.instance.first_name %}
+                                                value="{{ form.instance.first_name }}"
+                                            {% endif %} required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="" class="form-label mb-1 label cm">Last Name( थर )</label>
+                                            <input type="text" class="form-control cm"
+                                                placeholder="Enter last name" name="last_name" 
+                                                {% if form.instance.last_name %}
+                                                value="{{ form.instance.last_name }}"
+                                                {% endif %}required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="" class="form-label mb-1 label cm">Username( प्रयोगकर्ता नाम  )</label>
+                                            <input type="text" class="form-control cm"
+                                                placeholder="Enter username" name="username" 
+                                                {% if form.instance.username %}
+                                                value="{{ form.instance.username }}"
+                                                {% endif %}required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="" class="form-label mb-1 label cm">Phone Number( फोन नम्बर )</label>
+                                            <input type="text" class="form-control cm"
+                                                placeholder="Enter phone number" name="phone_number" 
+                                                {% if form.instance.phone_number %}
+                                                value="{{ form.instance.phone_number }}"
+                                                {% endif %}required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="" class="form-label mb-1 label cm">Email Address( इमेल ठेगाना )</label>
+                                            <input type="email" class="form-control cm"
+                                                placeholder="Enter email address" name="email"
+                                                {% if form.instance.email %}
+                                                value="{{ form.instance.email }}"
+                                                {% endif %} required>
+                                        </div>
+                                    </div>
+        
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="" class="form-label mb-1 label cm">Role( रोल )</label>
+                                            <select id="importer" class="form-select kit-form-control" name="role" required>
+                                                <option value="" disabled selected>Select user role</option>
+                                                    <option value="1"{% if form.instance.role == 1 %}selected{% endif %}>Admin</option>
+                                                    <option value="2"{% if form.instance.role == 2 %}selected{% endif %}>Complain Reviewer</option>
+                                            </select> 
+                                        </div>
+                                        
+                                        <div class="col-md-4">
+                                            <label for="" class="form-label mb-1 label cm">Address(ठेगाना )</label>
+                                            <input type="text" class="form-control cm"
+                                                placeholder="Enter address" name="address" 
+                                                {% if form.instance.address %}
+                                                value="{{ form.instance.address }}"
+                                                {% endif %}required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="" class="form-label mb-1 label cm">Password(पासवर्ड )</label>
+                                            <input type="password" class="form-control cm"
+                                                placeholder="Enter password" name="password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 text-end">
+                                            {% if form.instance.username %}
+                                            <button type="submit" class="btn btn-primary w-25">Update User</button>
+                                            {% else %}
+                                            <button type="submit" class="btn btn-primary w-25">Create</button>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    
+                                </form>
+                            </div>
+
+                        </div>
+
+
+                        
                     </div>
-                    <div class="col form-group">
-                      <label for="lastname" class="form-label anonymous-form-label">Last Name(थर)*</label>
-                      <input type="text" class="form-control" id="lastname" placeholder="Enter your Last name" aria-label="Last name" name="last_name" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col form-group">
-                      <label for="username" class="form-label anonymous-form-label">Username*</label>
-                      <input type="text" class="form-control" id="firstname" placeholder=" Enter your First name" aria-label="First name"  name="username"/>
-                    </div>
-                    <div class="col form-group">
-                      <label for="exampleInputPassword" class="form-label login-form-label">Password (पासवर्ड)*</label>
-                      <input type="password" class="form-control" id="exampleInputPassword" name="password" placeholder="Enter your Password" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col form-group">
-                      <label for="exampleInputEmail1" class="form-label login-form-label">Email Address *</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="Enter your Email/Username/Phone number" />
-                    </div>
-                    <div class="col form-group">
-                      <label for="exampleInputPhoneNumber" class="form-label anonymous-form-label">Phone Number (फोन नम्बर)*</label>
-                      <input type="text" class="form-control" id="exampleInputPhoneNumber" name="phone_number" placeholder="Enter your Phone Number" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col form-group">
-                      <label for="exampleInputRole" class="form-label anonymous-form-label">Role *</label>
-                      <select class="form-select" aria-label="Default select example" id="exampleInputRole" name="role">
-                        <option value="2">Admin</option>
-                        <option value="3">Super Admin</option>
-                        <option value="4">Complain Reviewer</option>
-                      </select>
-                    </div>
-                  </div>
-                <div class="btn-colu">
-                  <div class="create-btn-div">
-                    <button type="submit" class="btn w-100 btn-primary">Create</button>
-                  </div>
-                </div>
-                </form>
-              </div>
+                </section>
+
+
             </div>
-          </div>
-        </div>
-      </section>
-    </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  </body>
-</html>
+            {% endblock %}

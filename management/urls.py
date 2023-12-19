@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, api
 
 app_name='management'
 
@@ -11,11 +11,15 @@ urlpatterns = [
     path('get-subcategories/<int:category_id>/', views.get_subcategories, name='get_subcategories'),
     path('all-complains',views.all_complains,name='all_complains'),
     path('create-complain',views.create_complain,name='create_complain'),
-    path('my-complains',views.my_complains,name='my_complains'),
     path('complain-view/<int:id>',views.view_complain,name='view_complain'),
     path('category-list',views.category_list,name='category_list'),
+    path('create-braod-category',views.create_broad_category,name='create_broad_category'),
     path('create-category',views.create_category,name='create_category'),
     path('create-sub-category',views.create_sub_category, name='create_sub_category'),
+    path('delete-category/<int:id>',views.delete_category,name='delete_category'),
+    path('delete-broad-category/<int:id>',views.delete_broad_category,name='delete_broad_category'),
+    path('delete-sub-category/<int:id>',views.delete_sub_category,name='delete_sub_category'),
     path('create-communication/<int:id>',views.create_communication,name='create_communication'),
-    path('response/<int:id>',views.response, name="response")
+    path('response/<int:id>',views.response, name="response"),
+    path('management/complaint/<int:complain_id>', api.ComplainDetails.as_view(), name='complaint_details')
 ]

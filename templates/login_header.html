@@ -1,184 +1,56 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Complain System</title>
-    <link rel=“stylesheet” href=“https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css” />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DFTQC | Grievance Handling System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.css" integrity="sha512-nNlU0WK2QfKsuEmdcTwkeh+lhGs6uyOxuUs+n+0oXSYDok5qy0EI0lt01ZynHq6+p/tbgpZ7P+yUb+r71wqdXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />   
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
   <body>
-    <header class="top-header">
-      <div class="container">
-        <div class="top-header-div">
-          <img src='{% static 'images/nepal-government.png' %}' alt="logo" />
-          <img src='{% static 'images/nepalflag.gif'%}' alt="" />
-          <!-- <div class="logout-div">
-            <a href="#"><span class="material-symbols-outlined"> logout </span> </a>
-            <a href="#" class="logout">logout</a>
-          </div> -->
-        </div>
-      </div>
-      <section class="nav-container">
-        <div class="container">
-          <div class="row nav_div">
-            <div class="col-md-12 desktop_view_nav_div">
-              <div class="navigation">
-                {% if request.user.role == 3 %}
-                <nav class="navbar navbar-expand-lg">
-                  <div class="container-fluid p-0">
-                    <div class="collapse navbar-collapse nav-div" id="navbarSupportedContent">
-                      <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item">
-                          <a class="nav-link" aria-current="page" href="#"><span class="material-symbols-outlined"> home </span> Dashboard</a>
-                        </li>
 
-                        <li class="nav-item">
-                          <a class="nav-link" aria-current="page" href='{% url 'management:all_complains' %}'><span class="material-symbols-outlined"> person </span>Complains</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="material-symbols-outlined"> group </span>Users</a>
-                          <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'account:admin_user' %}">Admin</a></li>
-                            <li><a class="dropdown-item" href="{% url 'account:all_user' %}">General User</a></li>
-                          </ul>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="{% url 'management:category_list' %}" role="button" aria-expanded="false"><span class="material-symbols-outlined"> grid_view </span>Cateogories</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="login-div">
-                      <a href='{% url 'account:logout_user' %}'><span class="material-symbols-outlined"> logout </span> </a>
-                      <a href='{% url 'account:logout_user' %}' class="login">logout</a>
-                    </div>
-                  </div>
-                </nav>
-                {% endif %} 
-                {% if request.user.role == 2%}
-                <nav class="navbar navbar-expand-lg">
-                    <div class="container-fluid p-0">
-                      <div class="collapse navbar-collapse nav-div" id="navbarSupportedContent">
-                        <ul class="navbar-nav mb-2 mb-lg-0">
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#"><span class="material-symbols-outlined"> home </span> Dashboard</a>
-                          </li>
-  
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="./complain-list.html"><span class="material-symbols-outlined"> person </span>All Complains</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="login-div">
-                        <a href='{% url 'account:logout_user' %}'><span class="material-symbols-outlined"> logout </span> </a>
-                        <a href='{% url 'account:logout_user' %}' class="login">logout</a>
-                      </div>
-                    </div>
-                  </nav>
-                {% endif %}
-                {% if request.user.role == 1 %}
-                <nav class="navbar navbar-expand-lg">
-                    <div class="container-fluid p-0">
-                      <div class="collapse navbar-collapse nav-div" id="navbarSupportedContent">
-                        <ul class="navbar-nav mb-2 mb-lg-0">
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#"><span class="material-symbols-outlined"> home </span> Dashboard</a>
-                          </li>
-  
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'management:create_complain' %}"><span class="material-symbols-outlined"> person </span>Register Complain</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'management:my_complains' %}"><span class="material-symbols-outlined"> person </span>My Complains</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'management:category_list' %}l"><span class="material-symbols-outlined"> person </span>Categories</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="login-div">
-                        <a href='{% url 'account:logout_user' %}'><span class="material-symbols-outlined"> logout </span> </a>
-                        <a href='{% url 'account:logout_user' %}' class="login">logout</a>
-                      </div>
-                    </div>
-                  </nav>
-                {% endif %}
-                {% if request.user.role == 4 %}
-                <nav class="navbar navbar-expand-lg">
-                  <div class="container-fluid p-0">
-                    <div class="collapse navbar-collapse nav-div" id="navbarSupportedContent">
-                      <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item">
-                          <a class="nav-link" aria-current="page" href="#"><span class="material-symbols-outlined"> home </span> Dashboard</a>
-                        </li>
-
-                        <li class="nav-item">
-                          <a class="nav-link" aria-current="page" href='{% url 'management:all_complains' %}'><span class="material-symbols-outlined"> person </span>Complains</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="{% url 'management:category_list' %}" role="button" aria-expanded="false"><span class="material-symbols-outlined"> grid_view </span>Cateogories</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="login-div">
-                      <a href='{% url 'account:logout_user' %}'><span class="material-symbols-outlined"> logout </span> </a>
-                      <a href='{% url 'account:logout_user' %}' class="login">logout</a>
-                    </div>
-                  </div>
-                </nav>
-                {% endif %}
-
-              </div>
-            </div>
-            <button class="btn toggle_btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-              <span class="material-symbols-outlined hamburger_icon"> menu </span>
-            </button>
-            <div class="toggle_content_part">
-              <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header">
-                  <h5 class="offcanvas-title" id="offcanvasRightLabel">Menu</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+        <div class="container-fluid d-flex justify-space-between mx-5">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'images/np.png' %}" alt="Logo" width="14%" height="100%" class="d-inline-block align-text-top">
+                <div class="ms-2">
+                    <p class="mb-0">Government of Nepal <br>
+                       Ministry of Agriculture and Livestock Development
+                    </p>
+                    <p class="mb-0 dftqc">Department of Food Technology and Quality Control <br> <span>Grievance Handling System</span></p> 
                 </div>
-                <div class="offcanvas-body">
-                  <nav class="navbar navbar-expand-lg">
-                    <div class="container-fluid p-0">
-                      <div class="nav-div" id="navbarSupportedContent">
-                        <ul class="navbar-nav mb-2 mb-lg-0">
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#"><span class="material-symbols-outlined"> home </span> Dashboard</a>
-                          </li>
+            </a>
 
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="./complain-list.html"><span class="material-symbols-outlined"> person </span>Complains</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="./user-list.html"><span class="material-symbols-outlined"> group </span>Users</a>
-                          </li>
-                          <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="material-symbols-outlined"> grid_view </span>Cateogories</a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#">Admin</a></li>
-                              <li><a class="dropdown-item" href="#">General User</a></li>
-                            </ul>
-                          </li>
-                        </ul>
-                        <div class="login-div">
-                          <a href='{% url 'account:logout_user' %}'><span class="material-symbols-outlined"> logout </span> </a>
-                          <a href='{% url 'account:logout_user' %}' class="login">logout</a>
+            <div class="db-user-profile">
+                <div class="db-user-profile-right dropdown main">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="usersmimage-div">
+                            <img src="https://ui-avatars.com/api/?name={{ request.user.first_name.0 }}+{{ request.user.last_name.0 }}&amp;rounded=true&amp;background=FB802C&amp;color=ffffff&amp;size=28&amp;bold=true" alt=""></div>
+                        <div>
+                            <h3 class="username"> {{ request.user.first_name }} {{ request.user.last_name }}</h3>
+                            <p class="userrole">{{ request.user.role_name }}</p>
                         </div>
-                      </div>
-                    </div>
-                  </nav>
+                    </button>
+                    <ul class="dropdown-menu ">
+                        <li><a class="dropdown-item profile" href="{% url 'account:my_account'%}">My Account</a></li>
+                        <li>
+                            <a class="dropdown-item log-profile" href="{% url 'account:logout_user'%}">
+                            Logout
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-              </div>
             </div>
-          </div>
+
         </div>
-      </section>
-      </header>
+    </nav>

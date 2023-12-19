@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+            <div class="col-md-9 my-profile-w-85">
+
+                <section id="tab-content-container">
+                    <div class="p-0">
+                        <div class="row">
+                            <div class="main-section-title">
+                                <a href="" class="section-title"> Sub Categories > <span style="color: #7a7a7a; font-size: 18px;"><small>Sub-category > Create</small></span></a>
+                            </div>
+                            <hr class="main-section-hr">
+
+                            <div class="tab-content mt-4" id="myTabContent">
+                                <form action="{% url 'management:create_sub_category'%}" method="post">
+                                    {% csrf_token %}
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="" class="form-label cm">Sub-category name in english</label>
+                                            <input type="text" class="form-control cm"
+                                                placeholder="Enter category name in english" name="name">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="" class="form-label cm">Sub-category name in nepali</label>
+                                            <input type="text" class="form-control cm"
+                                                placeholder="Enter category name in nepali" name="nepali_name">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="" class="form-label cm">Associated Category</label>
+                                            <select id="importer" class="form-select form-control kit-form-control" name="category">
+                                                <option value="" disabled selected>Select associated category</option>
+                                                {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.category_name }}</option>
+                                                {% endfor %}
+                                            </select> 
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 text-end">
+                                            <button type="submit" class="btn btn-primary w-25">Create</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+
+                        
+                    </div>
+                </section>
+
+            </div>
+ {% endblock %}

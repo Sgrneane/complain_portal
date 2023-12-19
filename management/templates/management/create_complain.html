@@ -1,97 +1,205 @@
-{% include 'login_header.html' %}
-    <main>
-      <div class="container create-complain-page-container">
-        <div class="row anonymous-row">
-          <div class="col-md-12 login-form-colu">
-            <div class="form-div">
-              <div class="anonymous-form-head">
-                <h3 class="register-heading">Create Complain</h3>
+{% extends 'layout.html'%}
+{% load static %}
+{% block content %}
+<div class="col-md-9 my-profile-w-85">
+    <div>
+        <div id="tab-content-container">
+          <div class="p-0">
+            <div class="row">
+              <div class="main-section-title">
+                <a href="" class="section-title">गुनासो दर्ता सम्बन्धि जानकारी</a>
               </div>
-              <form method="post" class="card anonymous-form" role="form" action="{% url 'management:create_complain' %}" enctype="multipart/form-data">
-                {% csrf_token %}
+              <hr class="main-section-hr">
+              <div class="tab-content mt-3" id="myTabContent">
                 <div class="row">
-                  <div class="col form-group">
-                    <label for="exampleInputCateogry" class="form-label anonymous-form-label">Complain Category ( गुनासो वर्ग)*</label>
-                    <select class="form-select" aria-label="Default select example" id="complain_category" name="complain_category">
-                      {% for c in complain_category %}
-                      <option value={{c.id}}>{{c}}</option>
-                    {% endfor %}
-                    </select>
-                  </div>
-                  <div class="col form-group">
-                    <label for="exampleInputCateogry" class="form-label anonymous-form-label">Complain Sub-Category ( गुनासो वर्ग)*</label>
-                    <select class="form-select" id="sub-category" aria-label="Default select example" name="complain_sub_category">
-                     
-                    </select>
-                  </div>
+                  <p class="label">
+                    कृषि वस्तुको स्वच्छता सम्बन्धी सम्झौताको पारदर्शिता प्रावधान अन्तर्गत नेपालमा एस.पि.एस नेशनल
+                    ईन्क्वायरी प्वाईन्ट स्थापना सन् २००४ जनवरी १ मा कृषि विकास मन्त्रालय अन्तर्गतको खाद्य प्रविधी तथा
+                    गुण नियन्त्रण विभागमा भएको हो । एस.पि.एस सम्बन्धी प्रावधानहरुका बारेमा नेशनल ईन्क्वायरी प्वाईन्टले
+                    जानकारी उपलब्ध गराउने क्रममा तपसिलका कार्यहरु गर्दछ ।
+                  </p>
                 </div>
-                <div class="row">
-                  <div class="col form-group">
-                    <label for="exampleInputComplaintitle" class="form-label anonymous-form-label">Complain Title*</label>
-                    <input type="text" class="form-control" id="exampleInputComplaintitle" name="complain_title" placeholder="Enter the Complain Title" />
-                  </div>
-                  <div class="col form-group">
-                    <label for="exampleInputCateogry" class="form-label anonymous-form-label">Complain Priority *</label>
-                    <select class="form-select" aria-label="Default select example" name="priority">
-                      <option value="1">Normal</option>
-                      <option value="2">Urgent</option>
-                      <option value="3">Very Urgent</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <label for="exampleInputAddress" class="form-label anonymous-form-label">Address (ठेगाना)*</label>
-                    <div class="row">
-                      <div class="col-md-3 form-group">
-                        <label for="exampleInputAddress" class="form-label anonymous-form-label">Province No. (प्रदेश)</label>
-                        <input type="text" class="form-control" id="exampleInputAddress" name="province" />
-                      </div>
-                      <div class="col-md-2 form-group">
-                        <label for="exampleInputAddress" class="form-label anonymous-form-label">District (जिल्ला)</label>
-                        <input type="text" class="form-control" id="exampleInputAddress" name="district" />
-                      </div>
-                      <div class="col-md-3 form-group">
-                        <label for="exampleInputAddress" class="form-label anonymous-form-label">Municipality (नगरपालिका)</label>
-                        <input type="text" class="form-control" id="exampleInputAddress" name="municipality" />
-                      </div>
-                      <div class="col-md-2 form-group">
-                        <label for="exampleInputAddress" class="form-label anonymous-form-label">Ward no. (वडा न.)</label>
-                        <input type="text" class="form-control" id="exampleInputAddress" name="ward" />
-                      </div>
-                      <div class="col-md-2 form-group">
-                        <label for="exampleInputAddress" class="form-label anonymous-form-label">Tole (टोल)</label>
-                        <input type="text" class="form-control" id="exampleInputAddress" name="tole" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col form-group">
-                    <label for="exampleInputComplaintitle" class="form-label anonymous-form-label">Complain Description *</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"></textarea>
-                  </div>
-                  <div class="col form-group">
-                    <label for="exampleInputCateogry" class="form-label anonymous-form-label">Complain Secrecy *</label>
-                    <select class="form-select" aria-label="Default select example" name="secrecy">
-                      <option value="0">Required Secrecy</option>
-                      <option value="1">Doesnot require Secrecy</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col form-group">
-                    <label for="formFileSm" class="form-label">Image or file (if any)</label>
-                    <input class="form-control file-upload-field form-control-sm" id="formFileSm" type="file" name="complain_image" />
-                  </div>
-                </div>
-            <div class="submit-btn-div">
-              <button type="submit" id="submit" class="btn btn-primary complain-submit-btn btn-lg">Submit (पेश गर्नुहोस्)</button>
+              </div>
             </div>
-            </div>
-          </form>
           </div>
         </div>
-      </div>
-    </main>
-  {% include 'footer.html' %}
+
+        <div id="tab-content-container" class="mt-3">
+              <div class="main-section-title">
+                <a href="" class="section-title">गुनासोको विवरण</a>
+              </div>
+              <hr class="main-section-hr">
+
+          <form action="{% url 'management:create_complain'%}" method="post" class="mt-5" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="complain-detail-container mt-5">
+              <div class="complain-details-title">Complain Details ( गुनासोको विवरण )</div>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <p class="label">Complain Title ( गुनासोको शिर्षक )</p>
+                            <input type="text" class="form-control cm" placeholder="Enter complain title" name="complain_title">
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                      <div class="col-md-4">
+                          <p class="label">Complain Category ( गुनासोको वर्ग )</p>
+                          <select id="category" class="form-select kit-form-control" name="complain_broad_category">
+                            <option value="" disabled selected>Select complain category</option>
+                            {% for c in complain_category %}
+                            <option value="{{c.id}}">{{c}}</option>
+                            {% endfor %}
+                                
+                          </select> 
+                      </div>
+
+                      <div class="col-md-4">
+                        <p class="label">Complain Priority ( गुनासोको प्राथमिकता )</p>
+                        <select id="category" class="form-select kit-form-control" name="priority">
+                          <option value="" disabled selected>Select complain priority</option>
+                              <option value="1">Normal</option>
+                              <option value="2">Urgent</option>
+                              <option value="3">Very Urgent</option>
+                        </select> 
+                      </div>
+
+                      <div class="col-md-4">
+                          <p class="label">Complain Secrecy ( गुनासोको गोप्यता )</p>
+                          <div class="d-flex align-items-center" style="height: 50px;">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="complain_secrecy" id="flexRadioDefault1" value="1" checked>
+                              <label class="form-check-label label" for="flexRadioDefault1">
+                                Required ( चाहिन्छ )
+                              </label>
+                            </div>
+                            <div class="form-check ms-2">
+                              <input class="form-check-input" type="radio" name="complain_secrecy" id="flexRadioDefault2" value="0">
+                              <label class="form-check-label label" for="flexRadioDefault2">
+                                Not Required ( चाहिदैन )
+                              </label>
+                            </div>
+                          </div> 
+                      </div>
+                      
+                    </div>
+
+                    <div class="row mt-4">
+                      <p class="data mb-2">Complain Address ( गुनासोको ठेगाना)</p>
+                        <div class="col-md-2">
+                          <p class="label">Province ( प्रदेश )</p>
+                          <select id="province" class="form-select kit-form-control" name="province">
+                            <option value="" disabled selected>Select province</option>
+                               {% for province in provinces %}
+                               <option value="{{ province.id }}">{{province.name}}</option>
+                               {% endfor %}
+                          </select> 
+                        </div>
+                        <div class="col-md-3">
+                          <p class="label">District ( जिल्ला )</p>
+                          <select id="district" class="form-select kit-form-control" name='district'>
+                            <option value="" disabled selected>Select District</option>
+                          </select> 
+                        </div>
+                        <div class="col-md-3">
+                          <p class="label">Municipality ( पालिका )</p>
+                          <select id="municipality" class="form-select kit-form-control" name="municipality">
+                            <option value="" disabled selected>Select Municipality</option>
+                          
+                          </select> 
+                        </div>
+                        <div class="col-md-4 d-flex">
+                          <div>
+                            <p class="label">Ward No. ( वडा नं. )</p>
+                            <input type="text" class="form-control cm" placeholder="Enter ward no" name="ward">
+                          </div>
+
+                          <div class="ms-2">
+                            <p class="label">Tole ( टोल )</p>
+                            <input type="text" class="form-control cm" placeholder="Enter ward no" name="tole">
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                      <p class="data mb-2">Complain Description ( गुनासोको विवरण )</p>
+                        <div class="col-md-12">
+                          <p class="label">Description ( विवरण )</p>
+                          <textarea name="complain_description" class="form-control" rows="5"></textarea> 
+                        </div>
+                        <div class="col-md-12 mt-3">
+                          <p class="label">Images or Files (if any) ( तस्वीर तथा डकुमेन्ट, यदि भएमा )</p>
+                          <input type="file" class="form-control cm" name="complain_image">
+                        </div>
+                    </div>
+              </div>
+
+              <div class="col-md-12 text-end mt-3">
+                <button type="submit" class="btn btn-primary">Submit Complain</button>
+              </div>
+
+            </div>
+
+            
+        </form>
+
+    </div>
+  </div>
+
+
+  <div class="container-fluid public-nav mt-3">
+    <div class="container h-100">
+      <nav class="navbar navbar-expand-lg h-100" style="box-shadow: none;">
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarNavDropdown" style="height: 60px;">
+            <ul class="navbar-nav h-100"
+              style="width: 100%!important; justify-content: center; align-items: center;">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="https://dftqc.gov.np/">© २०२२ खाद्य प्रविधि र गुण नियन्त्रण विभाग</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+</div>
+  {% endblock %}
+
+  {% block scripts %}
+  <script>
+            $(document).ready(function () {
+                $('#province').on('change', function () {
+                  var provinceId = $(this).val();
+                  $.ajax({
+                      url: `nepalmap/get-districts/${provinceId}/`,
+                      type: 'GET',
+                      success: function (data) {
+                          var districtSelect = $('#district');
+                          districtSelect.empty();
+                          districtSelect.prepend('<option value="" disabled selected>Select District</option>');
+                          $.each(data, function (index, district) {
+                              districtSelect.append('<option value="' + district.id + '">' + district.name + '</option>');
+                          });
+                      }
+                  });
+                })
+                $('#district').on('change', function () {
+                  var districtId = $(this).val();
+                  $.ajax({
+                      url: `nepalmap/get-district/get-municipalities/${districtId}/`,
+                      type: 'GET',
+                      success: function (data) {
+                          var municipalitySelect = $('#municipality');
+                          municipalitySelect.empty();
+                          municipalitySelect.prepend('<option value="" disabled selected>Select Municipality</option>');
+                          $.each(data, function (index, municipality) {
+                              municipalitySelect.append('<option value="' + municipality.id + '">' + municipality.name + '</option>');
+                          });
+                      }
+                  });
+                })
+            })
+        </script>
+        
+  {% endblock %}
+
+

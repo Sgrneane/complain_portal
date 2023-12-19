@@ -23,7 +23,7 @@ def signup(request):
             username = form.cleaned_data['username']
             phone = str(form.cleaned_data['phone_number'])
             # password = form.cleaned_data['password']
-            
+            form.cleaned_data['role']=3
             if not handle_signup_validation(request, email, username, phone):
                 return redirect('account:signup')
             User = get_user_model()
@@ -60,13 +60,13 @@ def logout_user(request):
     return redirect(reverse('management:index'))
 
 def all_user(request):
-    users=CustomUser.objects.filter(role=1)
-    admin_users=CustomUser.objects.exclude(role = 1)
+    users=CustomUser.objects.filter(role=3)
+    admin_users=CustomUser.objects.exclude(role = 3)
     context={
         'users': users,
         'admin_users': admin_users,
     }
-    return render(request,'account/all_userlist.html',context)
+    return render(request,'account/all_users.html',context)
 def admin_users(request):
     admin_users=CustomUser.objects.exclude(role = 1)
     context={
@@ -78,96 +78,86 @@ def view_user(request,id):
     context={
         'user': user
     }
-    return render(request,'account/view_user.html',context)
-
-
-
+    return render(request,'account/view_profile.html',context)
 
 def create_admin(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
-        role = int(request.POST.get('role'))
-        if form.is_valid():            
+        if form.is_valid():
+            first_name=form.cleaned_data['first_name']
+            last_name=form.cleaned_data['last_name']      
             email = form.cleaned_data['email']
+            address=form.cleaned_data['address']
             username = form.cleaned_data['username']
             phone = str(form.cleaned_data['phone_number'])
-            password = form.cleaned_data['password']
-            
+            role=form.cleaned_data['role']
+            password = form.cleaned_data['password']  
             if not handle_signup_validation(request, email, username,phone):
                 return redirect('account:create_admin')
             User = get_user_model()
             User.objects.create_user(
                 role=role,  
                 **form.cleaned_data
-            )
-            return redirect(reverse('account:admin_user'))
+                )
+            return redirect(reverse('account:all_user'))
         else:
-            print("hello")
             messages.error(request, 'User not created! Please fill the form with correct data!')
-    else:
-        form = SignupForm()
+
     return render(request,'account/create_admin.html')
 
 
 def edit_user(request,id):
-    user = get_object_or_404(CustomUser, id=id)
+    context={}
+    user = get_object_or_404(CustomUser, id=id) if id else None
+    user_form = SignupForm(instance=user)
+    context={
+            'form':user_form
+        }
     
-    if request.user.id != user.id and request.user.role != 3:  #allows users to update their own details only while allowing admin to update other users details too
+    if request.user.id != user.id and request.user.role != 1:  
         messages.error(request, 'Cannot Access!')
-        return redirect('edit-user', id=request.user.id)
+        return redirect('management:dashboard')
     
     if request.method == 'POST':
-        print()
-        form = EditUserForm(request.POST, instance=user)
-        role = int(request.POST.get('role'))
-        email = request.POST.get("email")
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        print(email,username)
-        if CustomUser.objects.exclude(id=user.id).filter(username=username).first():
-            messages.info(request, f'User with this username "{username}" already exists')
-            return redirect('main:my_account')
-        
-        if CustomUser.objects.exclude(id=user.id).filter(email=email).first():
-            messages.info(request, f'User with this email "{email}" already exists')
-            return redirect('main:my_account')
-    
+        form=EditUserForm(request.POST)
         if form.is_valid():
-            form.save(commit=False)
-            user.email = form.cleaned_data['email']
-            user.username = form.cleaned_data['username']
-            user.phone_number = str(form.cleaned_data['phone_number'])
-            user.first_name=form.cleaned_data['first_name']
-            user.last_name=form.cleaned_data['last_name']
-            user.password=make_password(password)
-            user.role=role
-            user.save()
-            if request.user.role == 3:
-                print("hello")
-                messages.success(request, "User Details Updated Successfully")
-                return redirect('account:admin_user')
-            else:
-                messages.success(request, "Details Updated Successfully")
-                return redirect('account:my_account')
-        else:
-            print(form.errors)
-            messages.error(request, "Please fill the form with correct data")
-    else:
-        form = EditUserForm()
+            first_name=form.cleaned_data['first_name']
+            last_name=form.cleaned_data['last_name']      
+            email = form.cleaned_data['email']
+            address=form.cleaned_data['address']
+            username = form.cleaned_data['username']
+            phone_number = str(form.cleaned_data['phone_number'])
+            role = int(request.POST.get('role',None))
+            if CustomUser.objects.exclude(id=user.id).filter(username=username).first():
+                messages.info(request, f'User with this username "{username}" already exists')
+                return redirect('account:edit_user', id=user.id)
         
-    context = {'user': user}
-    return render(request, 'account/edit_user.html', context)
+            if CustomUser.objects.exclude(id=user.id).filter(email=email).first():
+                messages.info(request, f'User with this email "{email}" already exists')
+                return redirect('account:edit_user', id=user.id)
+            user.first_name=first_name
+            user.last_name=last_name
+            user.email=email
+            user.username=username
+            user.phone_number=phone_number
+            user.address=address
+            user.role=role
+            user.password=make_password(form.cleaned_data['password'])
+            user.save()
+            messages.info(request,"User updated Sucessfully.")
+            return redirect(reverse('account:all_user'))
+        else:
+            messages.error(request, "Please fill the form with correct data")
+    return render(request, 'account/create_admin.html', context)
 
 def my_account(request):
     return render(request,'account/my_account.html')
 
 def delete_user(request, id):
     user=get_object_or_404(CustomUser,id=id)
-    print(user.email)
     user.delete()
-    return redirect(reverse('account:admin_user'))
+    return redirect(reverse('account:all_user'))
 
-"""
 def change_password(request):
     user = get_object_or_404(CustomUser, id=request.user.id)
     
@@ -196,11 +186,11 @@ def change_password(request):
         user.save()
         #update_session_auth_hash(request, user_object) #user is not logged out after changing password
         messages.success(request, "Password Changed Successfully! Login with new password")
-        return redirect('account:login_user')
+        return redirect('account:login')
         
     context = {'user': user}
     return render(request, 'account/change_password.html', context)
-
+"""
 def admin_can_change_password(request,id):
     user_to_change_password = get_object_or_404(CustomUser, id=id)
     if request.method == 'POST':

@@ -13,19 +13,18 @@ class CustomUser(AbstractUser):
             RegexValidator(r'^\d{10}$', 'Phone number must be 10 digits')
         ]
     )
+    address=models.CharField(max_length=100,null=True)
     created_date=models.DateTimeField(auto_now_add=True)
-    USER=1
-    ADMIN=2
-    SUPERADMIN=3
-    COMPLAIN_REVIEWER=4
+    USER=3
+    SUPERADMIN=1
+    COMPLAIN_REVIEWER=2
     ROLE_CHOICES=(
         (USER,'USER'),
-        (ADMIN,'ADMIN'),
         (SUPERADMIN,'SUPERADMIN'),
         (COMPLAIN_REVIEWER,'COMPLAIN REVIEWER')
     )
     role = models.PositiveSmallIntegerField(
-        choices=ROLE_CHOICES, blank=True, default=1
+        choices=ROLE_CHOICES, blank=True, default=3
     )
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=['username',]
@@ -35,10 +34,8 @@ class CustomUser(AbstractUser):
     
     def role_name(self):
         if self.role==1:
-            return 'user'
+            return 'Superadmin'
         elif self.role==2:
-            return 'admin'
-        elif self.role==3:
-            return 'superadmin'
-        elif self.role==4:
             return 'Complain Reviewer'
+        elif self.role==3:
+            return 'User'

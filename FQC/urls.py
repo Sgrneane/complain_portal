@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('management.urls')),
     path('account/',include('account.urls'),),
+    path('nepalmap/',include('nepalmap.urls')),
     path('social-auth/',include('social_django.urls', namespace='social')),
 ]
 if settings.DEBUG:

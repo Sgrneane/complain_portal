@@ -25,6 +25,9 @@
               <div class="anonymous-form-head">
                 <h3 class="register-heading">Create Category</h3>
               </div>
+              {% for message in messages %}
+               {{message}}
+               {% endfor %}
               <form method="post" class="card anonymous-form" role="form" action="{% url 'management:create_category' %}">
                 {% csrf_token %}
                 <div class="row">
