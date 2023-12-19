@@ -125,7 +125,7 @@
                                  {% if request.user.role == 1 %}
                                 <div class="row mt-3">
                                     <div class="col-md-12 text-end">
-                                        <button type="button" class="btn btn-primary">Print</button>
+                                        <button type="button" class="btn btn-primary"><a style="color:white;" href='https://pdfmachine.kantipurinfotech.com.np/public/api/gunaso/{{ complain.id }}'>Print</button>
                                         {% if not complain.response.exists and request.user.role == 1  %}
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                 data-bs-target="#response">Response</button>

@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.utils import timezone
 from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 from .models import ComplainCategory,ComplainSubCategory, AnonymousUser,Complain, Communication, Response,ComplainBroadCategory
 from account.models import CustomUser
 from .forms import AnonymousForm,ComplainBroadCategoryForm,ComplainCategoryForm,ComplainSubCategoryForm
@@ -122,9 +123,12 @@ def anonymous_complain(request):
             complain_broad_category=int(request.POST.get('complain_broad_category',None))
             complain_title=form.cleaned_data['complain_title']
             complain_priority=int(request.POST.get('priority',None))
-            complain_province=request.POST.get('province',None)
-            complain_district=request.POST.get('district',None)
-            complain_municipality=request.POST.get('municipality',None)
+            complain_province=int(request.POST.get('province',None))
+            complain_district=int(request.POST.get('district',None))
+            complain_municipality=int(request.POST.get('municipality',None))
+            complain_province=Province.objects.get(id=complain_province)
+            complain_district=District.objects.get(id=complain_district)
+            complain_municipality=Municipality.objects.get(id=complain_municipality)
             complain_ward=request.POST.get('ward',None)
             complain_tole=request.POST.get('tole',None)
             complain_description=form.cleaned_data['complain_description']
@@ -156,7 +160,8 @@ def anonymous_complain(request):
             }
             user_info=AnonymousUser.objects.create(**anonymous_object)
             complain_obj=Complain.objects.create(is_anonymous=user_info,**complain)
-            return render(request,'management/success.html')
+            messages.info(request,f"<strong>Success!</strong> Your Complain has been registered successfully.")
+            return redirect(reverse('management:index'))
         else:
             additional_context={
                 'form':form,
@@ -180,9 +185,12 @@ def create_complain(request):
         complain_broad_category=int(request.POST.get('complain_broad_category',None))
         complain_title=request.POST.get('complain_title',None)
         complain_priority=int(request.POST.get('priority',None))
-        complain_province=request.POST.get('province',None)
-        complain_district=request.POST.get('district',None)
-        complain_municipality=request.POST.get('municipality',None)
+        complain_province=int(request.POST.get('province',None))
+        complain_district=int(request.POST.get('district',None))
+        complain_municipality=int(request.POST.get('municipality',None))
+        complain_province=Province.objects.get(id=complain_province)
+        complain_district=District.objects.get(id=complain_district)
+        complain_municipality=Municipality.objects.get(id=complain_municipality)
         complain_ward=request.POST.get('ward',None)
         complain_tole=request.POST.get('tole',None)
         complain_description=request.POST.get('complain_description',None)
@@ -317,5 +325,22 @@ def response(request,id):
             )
         return redirect(reverse('management:all_complains'))
     return redirect(reverse('management:all_complains'))
+
+def search_complain(request):
+    if request.method=='POST':
+        search=request.POST['search']
+        try:
+            complain=Complain.objects.get(ticket_no=search)
+        except ObjectDoesNotExist:
+            complain = None
+        if complain:
+            context={
+                'complain':complain
+            }
+            return render(request,'management/search.html',context)
+        else:
+            messages.info(request,f"<strong>Sorry!</strong> Complain with this ticket number({search}) doesn't exist.")
+            return redirect(reverse('management:index'))
+
         
         

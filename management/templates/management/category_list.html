@@ -27,6 +27,7 @@
                             <div class="tab-content mt-4" id="myTabContent">
                                 <div class="tab-pane fade show active" id="broadCategorys" role="tabpanel" aria-labelledby="broadCategory-tab"
                                     tabindex="0">
+                                    {% if request.user.role == 1 %}
 
                                     <div class="col-md-12 text-end">
                                         <div class="add-heading">
@@ -35,6 +36,7 @@
                                             </p>
                                         </div>
                                     </div>
+                                    {% endif %}
                                     
                                     <table id="broadCategory" class="display" style="width:100%">
                                         <thead>
@@ -102,14 +104,17 @@
                                 </div>
                                 <div class="tab-pane fade" id="Categorys" role="tabpanel" aria-labelledby="Category-tab"
                                     tabindex="0">
-
+                                    {% if request.user.role == 1 %}
                                     <div class="col-md-12 text-end">
+                                       
                                         <div class="add-heading">
                                             <p>
                                                 <a href="{% url 'management:create_category' %}">Add Category</a>
                                             </p>
                                         </div>
+
                                     </div>
+                                    {% endif %}
 
                                     <table id="Category" class="display" style="width:100%">
                                         <thead>
@@ -175,13 +180,17 @@
 
                                 <div class="tab-pane fade" id="subCategorys" role="tabpanel" aria-labelledby="subCategory-tab"
                                     tabindex="0">
+                                    {% if request.user.role == 1 %}
                                     <div class="col-md-12 text-end">
+                                        
                                         <div class="add-heading">
                                             <p>
                                                 <a href="{% url 'management:create_sub_category' %}">Add Sub-category</a>
                                             </p>
                                         </div>
+                                        
                                     </div>
+                                    {% endif %}
                                     <table id="subCategory" class="display" style="width:100%">
                                         <thead>
                                             <tr>

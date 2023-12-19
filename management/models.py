@@ -89,7 +89,8 @@ class Complain(models.Model):
         else:
             return 'Very Urgent'
     
-    ordering_fields=['-complain_priority']
+    class Meta:
+        ordering=['-id']
 class Communication(models.Model):
     complain = models.ForeignKey(Complain,on_delete=models.CASCADE,related_name='complain_communication')
     communication_from =models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,related_name='user_from')

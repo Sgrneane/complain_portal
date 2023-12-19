@@ -4,6 +4,8 @@
   aria-labelledby="navsearchBoxLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered confirmation-modal">
     <div class="modal-content">
+    <form method="post" action="{% url 'management:search_complain' %}">
+      {% csrf_token %}
       <div class="modal-body delete-body text-start p-5">
         <label for="" class="form-label mb-1 data cm">Complain Token Number( टोकन नं. )</label>
         <input type="text" class="form-control cm" placeholder="Eg. DFTQC-CX-XXXX" name="search">
@@ -16,6 +18,7 @@
           </div>
         </div>
       </div>
+    </form>
     </div>
   </div>
 </div>

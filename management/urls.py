@@ -21,5 +21,7 @@ urlpatterns = [
     path('delete-sub-category/<int:id>',views.delete_sub_category,name='delete_sub_category'),
     path('create-communication/<int:id>',views.create_communication,name='create_communication'),
     path('response/<int:id>',views.response, name="response"),
-    path('management/complaint/<int:complain_id>', api.ComplainDetails.as_view(), name='complaint_details')
+    path('management/complaint/<int:complain_id>', api.ComplainDetails.as_view(), name='complaint_details'),
+    path('search',views.search_complain,name='search_complain')
+
 ]
