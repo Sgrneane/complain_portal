@@ -11,21 +11,43 @@
                             <hr class="main-section-hr">
 
                             <div class="tab-content mt-4" id="myTabContent">
-                                <form action="{%  url 'management:create_category'%}" method='post'>
+                                {% if category.id %}
+                                <form action="{%  url 'management:edit_category' id=category.id %}" method='post'>
+                                    {% else %}
+                                    <form action="{%  url 'management:create_category'%}" method='post'>
+                                    {% endif %}
                                     {% csrf_token %}
                                     <div class="row mb-3">
-                                        <div class="col-md-5">
+                                        <div class="col-md-6">
                                             <label for="" class="form-label cm">Category name in english</label>
-                                            <input type="text" class="form-control cm"
+                                            <input type="text" class="form-control cm"{% if category.id %} value="{{ category.category_name }}"{% endif %}
                                                 placeholder="Enter category name in english" name="category_name">
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-6">
                                             <label for="" class="form-label cm">Category name in nepali</label>
-                                            <input type="text" class="form-control cm"
+                                            <input type="text" class="form-control cm"{% if category.id %} value="{{ category.nepali_name }}"{% endif %}
                                                 placeholder="Enter category name in nepali" name="nepali_name">
                                         </div>
+                                        
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                        <label for="" class="form-label cm">Select sub-categories</label>
+                                        {% for sub_category in sub_categories %}
+                                          <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="{{ sub_category.id }}" id="flexCheckDefault" name="sub_categories" {% if category.id %}{% if sub_category in category.sub_category.all %}checked {% endif %}{% endif %}>
+                                            <label class="form-check-label label" for="flexCheckDefault">
+                                              {{ sub_category.name }}
+                                            </label>
+                                          </div>
+                                       {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-end">
                                         <div class="col-md-2 d-flex align-items-end">
-                                            <button type="submit" class="btn btn-primary w-100">Create</button>
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                {% if category.id %}Update{% else %} Create{% endif %}</button>
                                         </div>
                                     </div>
                                 </form>

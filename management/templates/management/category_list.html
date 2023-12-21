@@ -44,7 +44,9 @@
                                                 <th>S. No.</th>
                                                 <th>Category Name English</th>
                                                 <th>Category Name Nepali</th>
+                                                {% if request.user.role == 1%}
                                                 <th>Action</th>
+                                                {% endif %}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -53,11 +55,12 @@
                                                 <td>{{ forloop.counter }}</td>
                                                 <td>{{ broadcategory.english_name }}</td>
                                                 <td>{{ broadcategory.nepali_name}}</td>
+                                                {% if request.user.role == 1%}
                                                 <td>
                                                     <div class="d-flex kit-action-com">
                                                         <div class="d-flex kit-action-com">
                                                             <div class="action-btn-view">
-                                                                <a href="">
+                                                                <a href="{% url 'management:edit_broad_category' id=broadcategory.id %}">
                                                                     <span class="material-symbols-outlined">edit</span>
                                                                 </a>
                                                             </div>
@@ -96,6 +99,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                {% endif %}
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -122,7 +126,9 @@
                                                 <th>S. No.</th>
                                                 <th>Category Name English</th>
                                                 <th>Category Name Nepali</th>
+                                                {% if request.user.role == 1%}
                                                 <th>Action</th>
+                                                {% endif %}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -131,11 +137,12 @@
                                                 <td>{{ forloop.counter }}</td>
                                                 <td>{{ category.category_name }}</td>
                                                 <td>{{ category.nepali_name }}</td>
+                                                {% if request.user.role == 1%}
                                                 <td>
                                                     <div class="d-flex kit-action-com">
                                                         <div class="d-flex kit-action-com">
                                                             <div class="action-btn-view">
-                                                                <a href="">
+                                                                <a href="{% url 'management:edit_category' id=category.id %}">
                                                                     <span class="material-symbols-outlined">edit</span>
                                                                 </a>
                                                             </div>
@@ -172,6 +179,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                {% endif %}
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -197,7 +205,9 @@
                                                 <th>S. No.</th>
                                                 <th>Category Name English</th>
                                                 <th>Category Name Nepali</th>
+                                                {% if request.user.role == 1 %}
                                                 <th>Action</th>
+                                                {% endif %}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -206,11 +216,12 @@
                                                 <td>{{ forloop.counter }}</td>
                                                 <td>{{ sub_category.name }}</td>
                                                 <td>{{ sub_category.nepali_name }}</td>
+                                                {% if request.user.role == 1 %}
                                                 <td>
                                                     <div class="d-flex kit-action-com">
                                                         <div class="d-flex kit-action-com">
                                                             <div class="action-btn-view">
-                                                                <a href="">
+                                                                <a href="{% url 'management:edit_sub_category' id=sub_category.id %}">
                                                                     <span class="material-symbols-outlined">edit</span>
                                                                 </a>
                                                             </div>
@@ -247,6 +258,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                {% endif %}
                                             </tr>
                                             {% endfor %}
                                         </tbody>

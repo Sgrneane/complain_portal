@@ -23,12 +23,19 @@ def is_admin(view_func):
         else:
             return "Permission denied. You are not an admin."
     return wrapper
+def is_employee(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.role == 2 or request.user.role == 1:
+            return view_func(request, *args, **kwargs)
+        else:
+            return "Permission denied. You are not an admin."
+    return wrapper
 
 
 #decorator to verify whether user type is superadmin or not
 def is_superadmin(view_func):
     def wrapper(request, *args, **kwargs):
-        if request.user.role == 3:
+        if request.user.role == 1:
             return view_func(request, *args, **kwargs)
         else:
             return "Permission denied. You are not an superadmin."
@@ -38,7 +45,7 @@ def is_superadmin(view_func):
 #decorators to check whether user is normal user or not
 def is_user(view_func):
     def wrapper(request, *args, **kwargs):
-        if request.user.role == 1:
+        if request.user.role == 3:
             return view_func(request, *args, **kwargs)
         else:
             return "Permission denied. You are not an user."

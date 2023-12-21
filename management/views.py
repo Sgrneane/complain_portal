@@ -9,6 +9,8 @@ from .models import ComplainCategory,ComplainSubCategory, AnonymousUser,Complain
 from account.models import CustomUser
 from .forms import AnonymousForm,ComplainBroadCategoryForm,ComplainCategoryForm,ComplainSubCategoryForm
 from nepalmap.models import Province,District,Municipality
+from account.decorators import authentication_not_required,is_admin,is_superadmin,is_user, is_employee
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -30,77 +32,143 @@ def user_dashboard(request):
     return render(request,'dashboard.html',context)
 
 #Category and Broad category related Views.
-def create_broad_category(request):
+@is_superadmin
+def create_broad_category(request,id=None):
+    if id:
+        broad_category=ComplainBroadCategory.objects.get(id=id)
+        context={
+            'broad_category':broad_category
+        }
     if request.method== 'POST':
         form=ComplainBroadCategoryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('management:category_list')
+        if id:
+            broad_category=ComplainBroadCategory.objects.get(id=id)
+            name=form.data['english_name']
+            nepali_name=form.data['nepali_name']
+            broad_category.english_name=name
+            broad_category.nepali_name=nepali_name
+            broad_category.save()
+            messages.info(request,"Category Updated Syccessfully.")
+            return redirect(reverse('management:category_list'))
         else:
-            messages.error(request,"Category Not created! Please fill all required fields.")
-            return redirect(reverse('management:create_borad_category'))
+            if form.is_valid():
+                form.save()
+                return redirect('management:category_list')
+            else:
+                messages.error(request,"Category Not created! Please fill all required fields.")
+                return redirect(reverse('management:create_borad_category'))
     else:
-        return render(request,'management/add_broadcategory.html')
+        return render(request,'management/add_broadcategory.html',context)
     
 def category_list(request):
     broad_categories=ComplainBroadCategory.objects.all()
     sub_categories=ComplainSubCategory.objects.all()
-    categories = ComplainCategory.objects.prefetch_related('complainsubcategories').all()
+    categories = ComplainCategory.objects.all()
     context={
         'categories':categories,
         'broad_categories':broad_categories,
         'sub_categories': sub_categories
     }
     return render(request,'management/category_list.html',context)
-def create_category(request):
+@is_superadmin
+def create_category(request,id=None):
+    sub_categories=ComplainSubCategory.objects.all()
+    if id:
+        category=ComplainCategory.objects.get(id=id)
+    else:
+        category=None
     if request.method =='POST':
         form=ComplainCategoryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('management:category_list')
+        category_sub_categories = request.POST.getlist('sub_categories')
+        selected_sub_categories = ComplainSubCategory.objects.filter(id__in=category_sub_categories)
+        if id:
+            #for editing Purpose
+            category=ComplainCategory.objects.get(id=id)
+            category_name=form.data['category_name']
+            nepali_name= form.data['nepali_name']
+            category.category_name=category_name
+            category.nepali_name=nepali_name
+            category.save()
+            category.sub_category.clear()
+            category.sub_category.add(*selected_sub_categories)
+            messages.info(request,"Category Updated Successfully")
+            return redirect(reverse('management:category_list'))
         else:
-            messages.error(request,"please fill the form correctly.")
-            return redirect(reverse('management:add_category'))
+            if form.is_valid():
+                category_name=form.cleaned_data['category_name']
+                nepali_name= form.cleaned_data['nepali_name']
+                complain_category,created=ComplainCategory.objects.get_or_create(
+                    category_name=category_name,
+                    nepali_name=nepali_name,
+                )
+                complain_category.sub_category.add(*selected_sub_categories)
+            
+                return redirect('management:category_list')
+            else:
+                messages.error(request,"please fill the form correctly.")
+                return redirect(reverse('management:create_category'))
     else:
-        return render(request,'management/add_category.html')
-
-def create_sub_category(request):
+        context={
+            'sub_categories':sub_categories,
+            'category':category,
+        }
+        return render(request,'management/add_category.html',context)
+@is_superadmin
+def create_sub_category(request,id=None):
     categories=ComplainCategory.objects.all()
+    if id:
+        sub_category=ComplainSubCategory.objects.get(id=id)
+    else:
+        sub_categories=None
     context={
-        'categories':categories
+        'categories':categories,
+        'sub_category':sub_category
     }
     if request.method=='POST':
         form=ComplainSubCategoryForm(request.POST)
-        if form.is_valid():
-            sub_category_name=form.cleaned_data['name']
-            category=form.cleaned_data['category']
-            ComplainSubCategory.objects.create(
-                name=sub_category_name,
-                category=category,
-            )
-            return redirect('management:category_list')
+        if id:
+            sub_category=ComplainSubCategory.objects.get(id=id)
+            sub_category_name=form.data['name']
+            nepali_name=form.data['nepali_name']
+            sub_category.name=sub_category_name
+            sub_category.nepali_name=nepali_name
+            sub_category.save()
+            messages.info(request,"Sub Category has been Updated Successfully.")
+            return redirect(reverse('management:category_list'))
         else:
-            messages.error(request,'Please fill all fields to create subcategory.')
-            return redirect(reverse('management:add_subcategory'))
+            if form.is_valid():
+                sub_category_name=form.cleaned_data['name']
+                nepali_name=form.cleaned_data['nepali_name']
+                ComplainSubCategory.objects.create(
+                    name=sub_category_name,
+                    nepali_name=nepali_name,
+                )
+                return redirect('management:category_list')
+            else:
+                messages.error(request,'Please fill all fields to create subcategory.')
+                return redirect(reverse('management:add_subcategory'))
     else:
         return render(request,'management/add_subcategory.html',context)
-
+@is_superadmin
 def delete_category(request,id):
     category=ComplainCategory.objects.get(id=id)
     category.delete()
     return redirect(reverse('management:category_list'))
-
+@is_superadmin
 def delete_broad_category(request,id):
     broad_category=ComplainBroadCategory.objects.get(id=id)
     broad_category.delete()
     return redirect(reverse('management:category_list'))
-
+@is_superadmin
 def delete_sub_category(request,id):
     sub_category=ComplainSubCategory.objects.get(id=id)
     sub_category.delete()
     return redirect(reverse('management:category_list'))
 def get_subcategories(request, category_id):
-    subcategories = ComplainSubCategory.objects.filter(category_id=category_id)
+    # complain_category=ComplainCategory.objects.get(id=category_id)
+    # sub=ComplainSubCategory.objects.all()
+    subcategories = ComplainCategory.objects.get(id=category_id).sub_category.all()
+    print(subcategories)
     data = [{'id': sub.id, 'name': sub.name} for sub in subcategories]
     return JsonResponse(data, safe=False)
 
@@ -172,7 +240,7 @@ def anonymous_complain(request):
     else:
         return render(request,'management/anonymous_complain.html',context)
 
-
+@is_user
 def create_complain(request):
     user=request.user
     complain_broad_category=ComplainBroadCategory.objects.all()
@@ -199,7 +267,7 @@ def create_complain(request):
             secrecy=False
         else:
             secrecy=True
-        complain_image=request.FILES['complain_image']
+        complain_image=request.FILES.get('complain_image',None)
         complain_broad_category_instance = ComplainBroadCategory.objects.get(id=complain_broad_category)
         complain={
             "broad_category":complain_broad_category_instance,
@@ -218,6 +286,7 @@ def create_complain(request):
         return redirect(reverse('management:all_complains'))
     return render(request,'management/create_complain.html',context)
 
+@login_required
 def all_complains(request):
     user=request.user
     if user.role == 1:
@@ -243,6 +312,7 @@ def all_complains(request):
     }
     return render(request,'management/complain_list.html',context)
 
+@login_required
 def view_complain(request,id):
     complain=get_object_or_404(Complain,id=id)
     complain_categories=ComplainCategory.objects.all()
@@ -283,7 +353,7 @@ def view_complain(request,id):
     return render(request,'management/view_complain.html',context)
 
 
-
+@is_employee
 def create_communication(request,id):
     complain=get_object_or_404(Complain,id=id)
     if request.method =='POST':
@@ -304,7 +374,7 @@ def create_communication(request,id):
         }
         Communication.objects.create(**data)
         return redirect("management:view_complain",id=complain.id)
-    
+@is_superadmin  
 def response(request,id):
     user=request.user
     complain=Complain.objects.get(id=id)
@@ -341,6 +411,4 @@ def search_complain(request):
         else:
             messages.info(request,f"<strong>Sorry!</strong> Complain with this ticket number({search}) doesn't exist.")
             return redirect(reverse('management:index'))
-
-        
         

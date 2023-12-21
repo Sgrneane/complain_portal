@@ -11,7 +11,7 @@ class ComplainBroadCategoryForm(forms.ModelForm):
 class ComplainCategoryForm(forms.ModelForm):
     class Meta:
         model=ComplainCategory
-        fields='__all__'
+        fields=['category_name','nepali_name']
 class ComplainSubCategoryForm(forms.ModelForm):
     class Meta:
         model=ComplainSubCategory

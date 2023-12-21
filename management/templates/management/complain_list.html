@@ -46,7 +46,7 @@
                                         <tbody>
                                             {% for complain in complains %}
                                             <tr>
-                                                <td>{{ complain.id }}</td>
+                                                <td>{{ forloop.counter }}</td>
                                                 <td>{{ complain.ticket_no }}</td>
                                                 <td>{{ complain.complain_title }}</td>
                                                 <td>{{ complain.broad_category }}</td>

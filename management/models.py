@@ -2,6 +2,7 @@ from django.db import models
 from account.models import CustomUser
 from nepalmap.models import District,Municipality,Province
 import hashlib
+import shortuuid
 from django.core.validators import FileExtensionValidator,MaxLengthValidator,MaxValueValidator
 from .choices import status,priority
 
@@ -11,20 +12,20 @@ class ComplainBroadCategory(models.Model):
     nepali_name=models.CharField(max_length=100,unique=True)
     def __str__(self):
         return self.english_name
-class ComplainCategory(models.Model):
-    category_name=models.CharField(max_length=60,unique=True)
-    nepali_name=models.CharField(max_length=200,null=True)
-
-    def __str__(self):
-        return self.category_name
 
 class ComplainSubCategory(models.Model):
     name=models.CharField(max_length=60,unique=True)
     nepali_name=models.CharField(max_length=100, null=True)
-    category=models.ForeignKey(ComplainCategory,on_delete=models.CASCADE,related_name='complainsubcategories')
-
     def __str__(self):
         return self.name
+class ComplainCategory(models.Model):
+    category_name=models.CharField(max_length=60,unique=True)
+    nepali_name=models.CharField(max_length=200,null=True)
+    sub_category=models.ManyToManyField(ComplainSubCategory,related_name='complainsubcategories')
+    def __str__(self):
+        return self.category_name
+
+
 
 class AnonymousUser(models.Model):
     """Personal Information"""
@@ -36,7 +37,7 @@ class AnonymousUser(models.Model):
     def __str__(self):
         return self.first_name
 class Complain(models.Model):
-    ticket_no=models.CharField(max_length=20)
+    ticket_no=models.CharField(max_length=22, unique=True)
     broad_category= models.ForeignKey(ComplainBroadCategory,on_delete=models.CASCADE,related_name='broad_category',null=True)
     complain_category = models.ForeignKey(ComplainCategory,on_delete=models.CASCADE,related_name='complain',null=True)
     complain_sub_category=models.ForeignKey(ComplainSubCategory,on_delete=models.CASCADE,null=True,related_name='complain_sub_category')
@@ -65,10 +66,10 @@ class Complain(models.Model):
         return self.complain_title
     def save(self, *args, **kwargs):
         if not self.ticket_no:
+            unique_id = shortuuid.uuid()
+            digits_only = ''.join(filter(str.isdigit, unique_id))
             broad_category_id = self.broad_category.id if self.broad_category else 'NA'
-            complain_id = Complain.objects.count() + 1
-            encrypted_id = hashlib.md5(str(complain_id).encode()).hexdigest()[:4]
-            self.ticket_no = f'DFTQC-C{broad_category_id}-{encrypted_id}'
+            self.ticket_no = f'DFTQC-C{broad_category_id}-{digits_only[:4]}'
 
         super(Complain, self).save(*args, **kwargs)
     def get_status(self):

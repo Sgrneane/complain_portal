@@ -130,7 +130,7 @@
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                 data-bs-target="#response">Response</button>
                                                 {% endif %}
-                                        {% if not complain.assigned_to %}  
+                                        {% if not complain.assigned_to  and not complain.response.exists %}  
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                 data-bs-target="#forward">Forward</button>
                                                 {% endif %}                                       
@@ -159,7 +159,7 @@
                                                 {% if not complain.complain_category  %}
                                                 <div class="mb-3 col-md-12">
                                                     <label for="" class="form-label cm">Complain Category</label>
-                                                    <select id="" class="form-select kit-form-control" name="complain_category">
+                                                    <select id="" class="category form-select kit-form-control" name="complain_category">
                                                         <option value="" disabled selected>Select Complain Category</option>
                                                         {% for cc in complain_categories %}
                                                             <option value="{{ cc.id }}">{{ cc.category_name }}</option>
@@ -168,7 +168,7 @@
                                                 </div>
                                                 <div class="mb-3 col-md-12">
                                                     <label for="" class="form-label cm">Complain  Sub Category</label>
-                                                    <select id="" class="form-select kit-form-control" name="complain_sub_category">
+                                                    <select id="" class="subcategory form-select kit-form-control" name="complain_sub_category">
                                                         <option value="" disabled selected>Select Complain Sub Category</option>
                                                     </select> 
                                                 </div>
@@ -216,7 +216,7 @@
                                                     {% if not complain.complain_category %}
                                                     <div class="mb-3 col-md-12">
                                                         <label for="" class="form-label cm">Complain Category</label>
-                                                        <select id="category" class="form-select kit-form-control" name="complain_category">
+                                                        <select id="category" class="category form-select kit-form-control" name="complain_category">
                                                             <option value="" disabled selected>Select Complain Category</option>
                                                             {% for cc in complain_categories %}
                                                                 <option value="{{ cc.id }}">{{ cc.category_name }}</option>
@@ -225,7 +225,7 @@
                                                     </div>
                                                     <div class="mb-3 col-md-12">
                                                         <label for="" class="form-label cm">Complain  Sub Category</label>
-                                                        <select id="subcategory" class="form-select kit-form-control" name="complain_sub_category">
+                                                        <select id="subcategory" class=" subcategory form-select kit-form-control" name="complain_sub_category">
                                                             <option value="" disabled selected>Select Complain Sub Category</option>
                                                         </select> 
                                                     </div>
@@ -269,13 +269,13 @@
         {% block scripts %}
         <script>
             $(document).ready(function () {
-                $('#category').on('change', function () {
+                $('.category').on('change', function () {
                   var categoryId = $(this).val();
                   $.ajax({
                       url: `/get-subcategories/${categoryId}/`,
                       type: 'GET',
                       success: function (data) {
-                          var subcategorySelect = $('#subcategory');
+                          var subcategorySelect = $('.subcategory');
                           subcategorySelect.empty();
                           subcategorySelect.prepend('<option value="" disabled selected>Select Sub category</option>');
                           $.each(data, function (index, subcategory) {
