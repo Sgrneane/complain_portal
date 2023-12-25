@@ -5,6 +5,14 @@
                 <section id="tab-content-container">
                     <div class="p-0">
                         <div class="row">
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                {{ message|safe }}
+                               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                             </div>
+                            {% endfor %}
+                            {% endif %}
                             <div class="main-section-title">
                                 <a href="" class="section-title">Users</a>
                                 <ul class="nav nav-tabs" id="pradesh-tab" role="tablist">

@@ -5,12 +5,15 @@ from django.urls import reverse
 from django.utils import timezone
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
-from .models import ComplainCategory,ComplainSubCategory, AnonymousUser,Complain, Communication, Response,ComplainBroadCategory
+from .models import ComplainCategory,ComplainSubCategory, AnonymousUser,Complain, Communication, Response,ComplainBroadCategory, FAQ
 from account.models import CustomUser
-from .forms import AnonymousForm,ComplainBroadCategoryForm,ComplainCategoryForm,ComplainSubCategoryForm
+from .forms import AnonymousForm,ComplainBroadCategoryForm,ComplainCategoryForm,ComplainSubCategoryForm, FAQForm
 from nepalmap.models import Province,District,Municipality
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from account.decorators import authentication_not_required,is_admin,is_superadmin,is_user, is_employee
 from django.contrib.auth.decorators import login_required
+from .tasks import send_notification_mail
 
 # Create your views here.
 def index(request):
@@ -143,6 +146,7 @@ def create_sub_category(request,id=None):
                     name=sub_category_name,
                     nepali_name=nepali_name,
                 )
+                messages.info(request,"Sub Category has been created Successfully.")
                 return redirect('management:category_list')
             else:
                 messages.error(request,'Please fill all fields to create subcategory.')
@@ -153,16 +157,19 @@ def create_sub_category(request,id=None):
 def delete_category(request,id):
     category=ComplainCategory.objects.get(id=id)
     category.delete()
+    messages.info(request,"Category has been deleted Successfully.")
     return redirect(reverse('management:category_list'))
 @is_superadmin
 def delete_broad_category(request,id):
     broad_category=ComplainBroadCategory.objects.get(id=id)
     broad_category.delete()
+    messages.info(request,"Broad Category has been deleted Successfully.")
     return redirect(reverse('management:category_list'))
 @is_superadmin
 def delete_sub_category(request,id):
     sub_category=ComplainSubCategory.objects.get(id=id)
     sub_category.delete()
+    messages.info(request,"Sub Category has been deleted Successfully.")
     return redirect(reverse('management:category_list'))
 def get_subcategories(request, category_id):
     # complain_category=ComplainCategory.objects.get(id=category_id)
@@ -228,7 +235,15 @@ def anonymous_complain(request):
             }
             user_info=AnonymousUser.objects.create(**anonymous_object)
             complain_obj=Complain.objects.create(is_anonymous=user_info,**complain)
-            messages.info(request,f"<strong>Success!</strong> Your Complain has been registered successfully.")
+            mail_context={
+                'complain_obj':complain_obj,
+            }
+            admin_users=CustomUser.objects.filter(role =1)
+            email_lists=[admin_user.email for admin_user in admin_users]
+            html_content = render_to_string('management/mail_template.html',mail_context)
+            for email in email_lists:
+                send_notification_mail.delay(email,html_content)
+            messages.info(request,f"<strong>Success!</strong> Your Complain has been registered successfully.<br> Save and search the complain token <Strong>{complain_obj.ticket_no}</strong> for further information.")
             return redirect(reverse('management:index'))
         else:
             additional_context={
@@ -283,6 +298,14 @@ def create_complain(request):
             "complain_secrecy":secrecy
         }
         complain_obj=Complain.objects.create(created_by=user,**complain)
+        mail_context={
+                'complain_obj':complain_obj,
+            }
+        admin_users=CustomUser.objects.filter(role =1)
+        email_lists=[admin_user.email for admin_user in admin_users]
+        html_content = render_to_string('management/mail_template.html',mail_context)
+        for email in email_lists:
+            send_notification_mail.delay(email,html_content)
         return redirect(reverse('management:all_complains'))
     return render(request,'management/create_complain.html',context)
 
@@ -373,6 +396,12 @@ def create_communication(request,id):
             'image':image
         }
         Communication.objects.create(**data)
+        mail_context={
+            'complain_obj':complain,
+        }
+        admin_users=CustomUser.objects.filter(role =1)
+        html_content = render_to_string('management/mail_template.html',mail_context)
+        send_notification_mail.delay(communication_to.email,html_content)
         return redirect("management:view_complain",id=complain.id)
 @is_superadmin  
 def response(request,id):
@@ -412,3 +441,46 @@ def search_complain(request):
             messages.info(request,f"<strong>Sorry!</strong> Complain with this ticket number({search}) doesn't exist.")
             return redirect(reverse('management:index'))
         
+def index_categories(request):
+    broad_categories=ComplainBroadCategory.objects.all()
+    sub_categories=ComplainSubCategory.objects.all()
+    categories = ComplainCategory.objects.all()
+    context={
+        'categories':categories,
+        'broad_categories':broad_categories,
+        'sub_categories': sub_categories
+    }
+    return render(request,'management/index_categories.html',context)  
+
+def all_faqs(request):
+    faqs=FAQ.objects.all()
+    context={
+        'faqs':faqs
+    }
+    return render(request,'management/faqs_list.html',context)
+def index_faq(request):
+    faqs=FAQ.objects.all()
+    context={
+        'faqs':faqs
+    }
+    return render(request,'management/index_faq.html',context)
+def create_faq(request):
+    if request.method=='POST':
+        form=FAQForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('management:all_faqs'))
+        else:
+            messages.info(request,'Please fill form correctly')
+            return redirect(reverse('management:create_faq'))
+    
+    return render(request,'management/create_faq.html')
+        
+def send_mail_celery(request):
+    mail = 'sagarpneupane@gmail.com'
+    context={
+        'context':'Sagar Neupane'
+    }
+    html_content = render_to_string('management/mail_template.html',context)
+    send_notification_mail.delay(to_mail,html_content)
+    return HttpResponse('We have sent you a confirmation mail!')

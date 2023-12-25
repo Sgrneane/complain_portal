@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import RegexValidator
-from .models import ComplainBroadCategory,ComplainCategory,ComplainSubCategory,Complain
+from .models import ComplainBroadCategory,ComplainCategory,ComplainSubCategory,Complain, FAQ
 from .choices import status,priority
 
 #Category and Broad category related Form
@@ -15,6 +15,10 @@ class ComplainCategoryForm(forms.ModelForm):
 class ComplainSubCategoryForm(forms.ModelForm):
     class Meta:
         model=ComplainSubCategory
+        fields='__all__'
+class FAQForm(forms.ModelForm):
+    class Meta:
+        model=FAQ
         fields='__all__'
     
 

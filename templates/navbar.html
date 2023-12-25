@@ -22,6 +22,11 @@
                         group
                         </span>Users</a></li>
                         {% endif %}
+                        {% if request.user.role == 1%}
+                        <li><a href="{% url 'management:all_faqs' %}"><span class="material-symbols-rounded me-2">
+                            group
+                            </span>FAQs</a></li>
+                            {% endif %}
                     <li><a href="{% url 'account:change_password' %}"><span class="material-symbols-rounded me-2">
                         lock_reset
                         </span>Change Password</a></li>

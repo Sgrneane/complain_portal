@@ -21,7 +21,7 @@ def is_admin(view_func):
         if request.user.role == 2:
             return view_func(request, *args, **kwargs)
         else:
-            return "Permission denied. You are not an admin."
+            return redirect('account:login')
     return wrapper
 def is_employee(view_func):
     def wrapper(request, *args, **kwargs):
@@ -38,7 +38,7 @@ def is_superadmin(view_func):
         if request.user.role == 1:
             return view_func(request, *args, **kwargs)
         else:
-            return "Permission denied. You are not an superadmin."
+            return redirect('account:login')
     return wrapper
 
 
@@ -48,7 +48,7 @@ def is_user(view_func):
         if request.user.role == 3:
             return view_func(request, *args, **kwargs)
         else:
-            return "Permission denied. You are not an user."
+            return redirect('account:login')
     return wrapper
 
 

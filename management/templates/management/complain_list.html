@@ -252,3 +252,39 @@
                 </section>
             </div>
 {% endblock %}
+{% block scripts %}
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+<script>
+    $('#allComplain').dataTable( {
+        dom: 'fBrtpl',
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All']
+        ],
+    });
+    $('#pendingComplain').dataTable( {
+        dom: 'fBrtpl',
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All']
+        ],
+    });
+    $('#processingComplain').dataTable( {
+        dom: 'fBrtpl',
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All']
+        ],
+    });
+    $('#respondedComplain').dataTable( {
+        dom: 'fBrtpl',
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All']
+        ],
+    });
+</script>
+{% endblock %}

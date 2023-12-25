@@ -62,14 +62,16 @@ class Complain(models.Model):
                                         FileExtensionValidator(allowed_extensions=['mp4', 'avi', 'mov']),
                                         MaxValueValidator(100 * 1024 * 1024, message='File size must be no more than 100 MB.'),
         ])
+    created_date=models.DateTimeField(auto_now_add=True, null=True)
     def __str__(self):
         return self.complain_title
     def save(self, *args, **kwargs):
         if not self.ticket_no:
             unique_id = shortuuid.uuid()
+            complain_count=Complain.objects.count()
             digits_only = ''.join(filter(str.isdigit, unique_id))
             broad_category_id = self.broad_category.id if self.broad_category else 'NA'
-            self.ticket_no = f'DFTQC-C{broad_category_id}-{digits_only[:4]}'
+            self.ticket_no = f'DFTQC-C{broad_category_id}-{str(complain_count)+digits_only[:4]}'
 
         super(Complain, self).save(*args, **kwargs)
     def get_status(self):
@@ -104,3 +106,9 @@ class Response(models.Model):
     response_description=models.TextField()
     complain=models.ForeignKey(Complain,on_delete=models.CASCADE,related_name='response')
     response_image=models.ImageField(null=True)
+
+
+class FAQ(models.Model):
+    question=models.TextField()
+    answer=models.TextField()
+    

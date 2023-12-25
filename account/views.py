@@ -144,6 +144,7 @@ def edit_user(request,id):
             user.role=role
             user.password=make_password(form.cleaned_data['password'])
             user.save()
+            update_session_auth_hash(request, user) 
             messages.info(request,"User updated Sucessfully.")
             return redirect(reverse('account:all_user'))
         else:

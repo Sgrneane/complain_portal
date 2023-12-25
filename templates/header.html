@@ -62,7 +62,7 @@
                 <a class="nav-link" aria-current="page" href="{% url 'management:index' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Complain Categories</a>
+                <a class="nav-link" href="{% url 'management:index_categories' %}">Complain Categories</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#navsearchBox">Search Complain</a>
@@ -71,7 +71,7 @@
                 <a class="nav-link" href="#">Manual</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">FAQs</a>
+                <a class="nav-link" href="{% url 'management:index_faq'%}">FAQs</a>
               </li>
             </ul>
             <div class="auth-btn ms-auto">

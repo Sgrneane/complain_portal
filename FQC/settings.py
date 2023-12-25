@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'social_django',
     'nepalmap',
     'rest_framework',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -132,7 +133,7 @@ AUTH_USER_MODEL='account.CustomUser'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kathmandu'
 
 USE_I18N = True
 
@@ -178,3 +179,10 @@ EMAIL_HOST_PASSWORD = 'xqfp arto fqpr dngj'
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler',
 ]
+#Celery setup
+CELERY_BROKER_URL = 'redis://64.227.182.105:6379'
+CELERY_ACCEPT_CONTENT = {'application/json'}
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kathmandu'
+CELERY_RESULT_BACKEND = 'django-db'
