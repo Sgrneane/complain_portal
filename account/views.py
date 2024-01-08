@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from social_core.exceptions import AuthAlreadyAssociated
 from .models import CustomUser
+from .decorators import is_admin,is_superadmin,is_user, authentication_not_required
 from .forms import SignupForm, EditUserForm
 from .validation import handle_signup_validation
 
@@ -35,7 +36,7 @@ def signup(request):
         form = SignupForm()
     return render(request, 'account/signup.html')
 
- 
+@authentication_not_required
 def login_user(request):
     if(request.method == 'POST'):
         email=request.POST['email']
@@ -58,7 +59,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect(reverse('management:index'))
-
+@is_superadmin
 def all_user(request):
     users=CustomUser.objects.filter(role=3)
     admin_users=CustomUser.objects.exclude(role = 3)
@@ -67,6 +68,7 @@ def all_user(request):
         'admin_users': admin_users,
     }
     return render(request,'account/all_users.html',context)
+@is_superadmin
 def admin_users(request):
     admin_users=CustomUser.objects.exclude(role = 1)
     context={
@@ -79,7 +81,7 @@ def view_user(request,id):
         'user': user
     }
     return render(request,'account/view_profile.html',context)
-
+@is_superadmin
 def create_admin(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -105,7 +107,7 @@ def create_admin(request):
 
     return render(request,'account/create_admin.html')
 
-
+@is_superadmin
 def edit_user(request,id):
     context={}
     user = get_object_or_404(CustomUser, id=id) if id else None
@@ -153,7 +155,7 @@ def edit_user(request,id):
 
 def my_account(request):
     return render(request,'account/my_account.html')
-
+@is_superadmin
 def delete_user(request, id):
     user=get_object_or_404(CustomUser,id=id)
     user.delete()

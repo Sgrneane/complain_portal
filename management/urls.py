@@ -31,5 +31,6 @@ urlpatterns = [
     path('faqs-list', views.all_faqs, name="all_faqs"),
     path('index-faqs', views.index_faq, name="index_faq"),
     path('index-categories', views.index_categories, name="index_categories"),
+    path('pdf',views.pdf_view,name='pdf')
 
 ]
