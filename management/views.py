@@ -14,7 +14,6 @@ from django.template.loader import render_to_string
 from account.decorators import authentication_not_required,is_admin,is_superadmin,is_user, is_employee
 from django.contrib.auth.decorators import login_required
 from .tasks import send_notification_mail
-from FQC import renderers
 
 # Create your views here.
 def index(request):
@@ -477,15 +476,3 @@ def create_faq(request):
             return redirect(reverse('management:create_faq'))
     
     return render(request,'management/create_faq.html')
-        
-def send_mail_celery(request):
-    mail = 'sagarpneupane@gmail.com'
-    context={
-        'context':'Sagar Neupane'
-    }
-    html_content = render_to_string('management/mail_template.html',context)
-    send_notification_mail.delay(to_mail,html_content)
-    return HttpResponse('We have sent you a confirmation mail!')
-
-def pdf_view(request):
-    return renderers.render_to_pdf('management/print.html')
