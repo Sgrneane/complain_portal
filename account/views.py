@@ -18,7 +18,6 @@ def signup(request):
     """For creating regular users."""
     if request.method=='POST':
         form = SignupForm(request.POST)
-        
         if form.is_valid():
             email = form.cleaned_data['email'].lower()
             username = form.cleaned_data['username']

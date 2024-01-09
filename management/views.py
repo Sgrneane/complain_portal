@@ -35,16 +35,27 @@ def index(request):
     return render(request,'management/index.html',context)
 
 def user_dashboard(request):
-    if request.user.role==1:
-        categories_with_counts = ComplainBroadCategory.objects.annotate(complaint_count=Count('broad_category'))
-        for category in categories_with_counts:
-            print(category.english_name,category.complaint_count)
-    if request.user.role==3:
-        categories_with_counts = ComplainBroadCategory.objects.filter(broad_category__created_by=request.user).annotate(complaint_count=Count('broad_category'))
-        for category in categories_with_counts:
-            print(category.english_name,category.complaint_count)
+    total_complains=Complain.objects.count()
+    food_and_beverage_count=Complain.objects.filter(broad_category__english_name='Food and Beverages').count()
+    hotel_and_restaurant_count=Complain.objects.filter(broad_category__english_name='Hotel and Restaurants').count()
+    feed_count=Complain.objects.filter(broad_category__english_name='Feed').count()
+    service_count=Complain.objects.filter(broad_category__english_name='Service Delivery').count()
+    others_count=Complain.objects.filter(broad_category__english_name='Others').count()
+    pending_complains_count=Complain.objects.filter(complain_status=1).count()
+    processing_complains_count=Complain.objects.filter(complain_status=2).count()
+    responded_complains_count=Complain.objects.filter(complain_status=3).count()
+    rejected_complains_count=Complain.objects.filter(complain_status=4).count()
     context={
-        'a':5
+        'total_complains':total_complains,
+        'food_and_beverage_count': food_and_beverage_count,
+        'hotel_and_restaurant_count':hotel_and_restaurant_count,
+        'feed_count':feed_count,
+        'service_count':service_count,
+        'others_count':others_count,
+        'pending_complains_count':pending_complains_count,
+        'processing_complains_count':processing_complains_count,
+        'responded_complains_count':responded_complains_count,
+        'rejected_complains_count':rejected_complains_count,
     }
     return render(request,'dashboard.html',context)
 
@@ -74,7 +85,7 @@ def create_broad_category(request,id=None):
                 return redirect('management:category_list')
             else:
                 messages.error(request,"Category Not created! Please fill all required fields.")
-                return redirect(reverse('management:create_borad_category'))
+                return redirect(reverse('management:create_broad_category'))
     else:
         return render(request,'management/add_broadcategory.html',context)
     

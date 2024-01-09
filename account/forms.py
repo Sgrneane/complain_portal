@@ -6,7 +6,7 @@ class SignupForm(forms.ModelForm):
             
     class Meta:
         model=CustomUser
-        fields=['first_name','last_name','username','email','address','phone_number','role','password']
+        fields=['first_name','last_name','username','email','password','address','phone_number','role']
    
 class EditUserForm(forms.Form):
     first_name=forms.CharField()
