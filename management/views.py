@@ -267,10 +267,12 @@ def anonymous_complain(request):
             admin_users=CustomUser.objects.filter(role =1)
             email_lists=[admin_user.email for admin_user in admin_users]
             html_content = render_to_string('management/mail_template.html',mail_context)
-            for email in email_lists:
-                send_notification_mail.delay(email,html_content)
-            messages.info(request,f"<strong>Success!</strong> Your Complain has been registered successfully.<br> Save and search the complain token <Strong>{complain_obj.ticket_no}</strong> for further information.")
-            return redirect(reverse('management:index'))
+            try:
+                for email in email_lists:
+                    send_notification_mail.delay(email,html_content)
+                messages.info(request,f"<strong>Success!</strong> Your Complain has been registered successfully.<br> Save and search the complain token <Strong>{complain_obj.ticket_no}</strong> for further information.")
+            finally:
+                return redirect(reverse('management:index'))
         else:
             additional_context={
                 'form':form,
@@ -330,9 +332,11 @@ def create_complain(request):
         admin_users=CustomUser.objects.filter(role =1)
         email_lists=[admin_user.email for admin_user in admin_users]
         html_content = render_to_string('management/mail_template.html',mail_context)
-        for email in email_lists:
-            send_notification_mail.delay(email,html_content)
-        return redirect(reverse('management:all_complains'))
+        try:
+            for email in email_lists:
+                send_notification_mail.delay(email,html_content)
+        finally:
+            return redirect(reverse('management:all_complains'))
     return render(request,'management/create_complain.html',context)
 
 @login_required
@@ -427,8 +431,10 @@ def create_communication(request,id):
         }
         admin_users=CustomUser.objects.filter(role =1)
         html_content = render_to_string('management/mail_template.html',mail_context)
-        send_notification_mail.delay(communication_to.email,html_content)
-        return redirect("management:view_complain",id=complain.id)
+        try:
+            send_notification_mail.delay(communication_to.email,html_content)
+        finally:
+            return redirect("management:view_complain",id=complain.id)
 @is_superadmin  
 def response(request,id):
     user=request.user
