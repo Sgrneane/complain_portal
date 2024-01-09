@@ -91,13 +91,13 @@ def create_admin(request):
             address=form.cleaned_data['address']
             username = form.cleaned_data['username']
             phone = str(form.cleaned_data['phone_number'])
-            role=form.cleaned_data['role']
+            role= form.cleaned_data['role']
+            print(role)
             password = form.cleaned_data['password']  
             if not handle_signup_validation(request, email, username,phone):
                 return redirect('account:create_admin')
             User = get_user_model()
-            User.objects.create_user(
-                role=role,  
+            User.objects.create(
                 **form.cleaned_data
                 )
             return redirect(reverse('account:all_user'))
