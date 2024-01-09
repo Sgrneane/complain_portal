@@ -17,8 +17,22 @@ from .tasks import send_notification_mail
 
 # Create your views here.
 def index(request):
-    categories_with_counts = ComplainBroadCategory.objects.annotate(complaint_count=Count('broad_category'))
-    return render(request,'management/index.html')
+    total_complains=Complain.objects.count()
+    food_and_beverage_count=Complain.objects.filter(broad_category__english_name='Food and Beverages').count()
+    hotel_and_restaurant_count=Complain.objects.filter(broad_category__english_name='Hotel and Restaurants').count()
+    feed_count=Complain.objects.filter(broad_category__english_name='Feed').count()
+    service_count=Complain.objects.filter(broad_category__english_name='Service Delivery').count()
+    others_count=Complain.objects.filter(broad_category__english_name='Others').count()
+    context={
+        'total_complains':total_complains,
+        'food_and_beverage_count': food_and_beverage_count,
+        'hotel_and_restaurant_count':hotel_and_restaurant_count,
+        'feed_count':feed_count,
+        'service_count':service_count,
+        'others_count':others_count,
+
+    }
+    return render(request,'management/index.html',context)
 
 def user_dashboard(request):
     if request.user.role==1:

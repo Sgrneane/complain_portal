@@ -96,11 +96,11 @@ WSGI_APPLICATION = 'FQC.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'complain-portal', #lims_new
+        'NAME': 'complain_portal', #lims_new
         'USER': 'root',
-        'PASSWORD':'',
+        'PASSWORD':'A@shiq123',
         'HOST':'localhost',
-        'PORT': '3308',
+        'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
