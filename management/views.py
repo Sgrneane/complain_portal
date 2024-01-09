@@ -102,6 +102,7 @@ def category_list(request):
 @is_superadmin
 def create_category(request,id=None):
     sub_categories=ComplainSubCategory.objects.all()
+
     if id:
         category=ComplainCategory.objects.get(id=id)
     else:
@@ -148,7 +149,7 @@ def create_sub_category(request,id=None):
     if id:
         sub_category=ComplainSubCategory.objects.get(id=id)
     else:
-        sub_categories=None
+        sub_category=None
     context={
         'categories':categories,
         'sub_category':sub_category

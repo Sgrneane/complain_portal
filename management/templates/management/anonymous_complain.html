@@ -69,7 +69,7 @@
                           <select id="category" class="form-select kit-form-control" name="complain_broad_category">
                             <option value="" disabled selected>Select complain category</option>
                             {% for c in complain_category %}
-                            <option value="{{c.id}}">{{c}}</option>
+                            <option value="{{c.id}}">{{ c.english_name }}({{ c.nepali_name }})</option>
                             {% endfor %}
                                 
                           </select> 
