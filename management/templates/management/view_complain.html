@@ -182,7 +182,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-danger" name="reject"></button>
+                                                <button type="submit" class="btn btn-danger" name="reject">Reject</button>
                                                 <button type="submit" class="btn btn-primary" name="response">Response</button>
                                             </div>
 
@@ -279,7 +279,7 @@
                           subcategorySelect.empty();
                           subcategorySelect.prepend('<option value="" disabled selected>Select Sub category</option>');
                           $.each(data, function (index, subcategory) {
-                              subcategorySelect.append('<option value="' + subcategory.id + '">' + subcategory.nepali_name + '</option>');
+                              subcategorySelect.append('<option value="' + subcategory.id + '">' + subcategory.name + '</option>');
                           });
                       }
                   });

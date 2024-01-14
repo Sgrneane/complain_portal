@@ -2,6 +2,8 @@ from django.shortcuts import render,HttpResponse,get_object_or_404,get_list_or_4
 from django.db.models import Count
 from django.contrib import messages
 from django.urls import reverse
+from django.db.models import Q
+from datetime import datetime
 from django.utils import timezone
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -35,16 +37,38 @@ def index(request):
     return render(request,'management/index.html',context)
 
 def user_dashboard(request):
-    total_complains=Complain.objects.count()
-    food_and_beverage_count=Complain.objects.filter(broad_category__english_name='Food and Beverages').count()
-    hotel_and_restaurant_count=Complain.objects.filter(broad_category__english_name='Hotel and Restaurants').count()
-    feed_count=Complain.objects.filter(broad_category__english_name='Feed').count()
-    service_count=Complain.objects.filter(broad_category__english_name='Service Delivery').count()
-    others_count=Complain.objects.filter(broad_category__english_name='Others').count()
-    pending_complains_count=Complain.objects.filter(complain_status=1).count()
-    processing_complains_count=Complain.objects.filter(complain_status=2).count()
-    responded_complains_count=Complain.objects.filter(complain_status=3).count()
-    rejected_complains_count=Complain.objects.filter(complain_status=4).count()
+    user=request.user
+    if user.role == 3:
+        total_complains=Complain.objects.filter(created_by=user).count()
+        food_and_beverage_count=Complain.objects.filter(Q(broad_category__english_name='Food and Beverages') &
+                                                        Q(created_by=user)).count()
+        hotel_and_restaurant_count=Complain.objects.filter(Q(broad_category__english_name='Hotel and Restaurants') &
+                                                           Q(created_by=user)).count()
+        feed_count=Complain.objects.filter(Q(broad_category__english_name='Feed') &
+                                           Q(created_by=user)).count()
+        service_count=Complain.objects.filter(Q(broad_category__english_name='Service Delivery') &
+                                              Q(created_by=user)).count()
+        others_count=Complain.objects.filter(Q(broad_category__english_name='Others') &
+                                             Q(created_by=user)).count()
+        pending_complains_count=Complain.objects.filter(Q(complain_status=1) &
+                                                        Q(created_by=user)).count()
+        processing_complains_count=Complain.objects.filter(Q(complain_status=2) & 
+                                                           Q(created_by=user)).count()
+        responded_complains_count=Complain.objects.filter(Q(complain_status=3) &
+                                                          Q(created_by=user)).count()
+        rejected_complains_count=Complain.objects.filter(Q(complain_status=4) &
+                                                         Q(created_by=user)).count()
+    else:
+        total_complains=Complain.objects.count()
+        food_and_beverage_count=Complain.objects.filter(broad_category__english_name='Food and Beverages').count()
+        hotel_and_restaurant_count=Complain.objects.filter(broad_category__english_name='Hotel and Restaurants').count()
+        feed_count=Complain.objects.filter(broad_category__english_name='Feed').count()
+        service_count=Complain.objects.filter(broad_category__english_name='Service Delivery').count()
+        others_count=Complain.objects.filter(broad_category__english_name='Others').count()
+        pending_complains_count=Complain.objects.filter(complain_status=1).count()
+        processing_complains_count=Complain.objects.filter(complain_status=2).count()
+        responded_complains_count=Complain.objects.filter(complain_status=3).count()
+        rejected_complains_count=Complain.objects.filter(complain_status=4).count()
     context={
         'total_complains':total_complains,
         'food_and_beverage_count': food_and_beverage_count,
@@ -203,7 +227,7 @@ def get_subcategories(request, category_id):
     # sub=ComplainSubCategory.objects.all()
     subcategories = ComplainCategory.objects.get(id=category_id).sub_category.all()
     print(subcategories)
-    data = [{'id': sub.id, 'name': sub.name} for sub in subcategories]
+    data = [{'id': sub.id, 'name': sub.nepali_name} for sub in subcategories]
     return JsonResponse(data, safe=False)
 
 #Anonymous Complain related views
@@ -214,6 +238,9 @@ def anonymous_complain(request):
             'complain_category': complain_broad_category,
             'provinces': provinces
             }
+    complaints_today = request.session.get('complaints_today', [])  
+    if len(complaints_today) >= 2:
+        return redirect(reverse('management:limit_reached'))  
             
     if request.method == 'POST':
         form=AnonymousForm(request.POST,request.FILES)
@@ -262,6 +289,10 @@ def anonymous_complain(request):
             }
             user_info=AnonymousUser.objects.create(**anonymous_object)
             complain_obj=Complain.objects.create(is_anonymous=user_info,**complain)
+            current_date_str = datetime.now().date().isoformat()
+            complaints_today.append(current_date_str)
+            request.session['complaints_today'] = complaints_today
+            request.session.save()
             mail_context={
                 'complain_obj':complain_obj,
             }
@@ -508,3 +539,10 @@ def create_faq(request):
             return redirect(reverse('management:create_faq'))
     
     return render(request,'management/create_faq.html')
+
+def limit_reached(request):
+    return render(request,'management/limit_reached.html')
+
+
+
+

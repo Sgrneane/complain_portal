@@ -22,7 +22,7 @@ def signup(request):
             email = form.cleaned_data['email'].lower()
             username = form.cleaned_data['username']
             phone = str(form.cleaned_data['phone_number'])
-            # password = form.cleaned_data['password']
+            password = form.cleaned_data['password']
             form.cleaned_data['role']=3
             if not handle_signup_validation(request, email, username, phone):
                 return redirect('account:signup')
@@ -92,14 +92,15 @@ def create_admin(request):
             username = form.cleaned_data['username']
             phone = str(form.cleaned_data['phone_number'])
             role= form.cleaned_data['role']
-            print(role)
-            password = form.cleaned_data['password']  
+            password = request.POST.get('password')
             if not handle_signup_validation(request, email, username,phone):
                 return redirect('account:create_admin')
             User = get_user_model()
-            User.objects.create(
+            d = User.objects.create(
                 **form.cleaned_data
                 )
+            d.password = make_password(password)
+            d.save()
             return redirect(reverse('account:all_user'))
         else:
             messages.error(request, 'User not created! Please fill the form with correct data!')

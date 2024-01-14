@@ -1,0 +1,30 @@
+{% extends 'footer.html' %}
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+
+
+<div class="container mt-4">
+    <div class="row mx-5">
+        <div id="tab-content-container">
+          <div class="p-0">
+            <div class="row">
+              <div class="main-section-title">
+                <a href="" class="section-title">Anonymous Form limit reached</a>
+              </div>
+              <hr class="main-section-hr">
+              <div class="tab-content mt-3" id="myTabContent">
+                <div class="row">
+                  <p class="label">
+                    तपाईले एक दिनमा २ वटा बेनामी  गुनासोहरु मात्र दर्ता गर्न सक्नुहुन्छ। 
+                     थप गनासो दर्ता गर्न को लागि कृपया सिस्टममा आफ्नो विवरण राखी रजीस्टर र  लगिन गर्नु होला ।<br><br>  
+                     <a href="{% url 'account:signup' %}">Click Here To Register</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -76,11 +76,12 @@
 
                                                             <form class="action-btn-dlt" action="{% url 'account:delete_user' id=admin_user.id%}" method="post">
                                                                 {% csrf_token %}
-                                                                <input type="hidden" name="_token" value="ZHhwvleWh9eZuuq4vvV8LPyq0oxoDJyqhsPcWQqK"> <input type="hidden" name="_method" value="delete">                            <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop_483">
+                                                                <input type="hidden" name="_token" value="ZHhwvleWh9eZuuq4vvV8LPyq0oxoDJyqhsPcWQqK"> <input type="hidden" name="_method" value="delete">                            
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop1_{{ admin_user.id }}">
                                                                     <i class="fa-regular fa-trash-can"></i>
                                                                 </button>
                                     
-                                                                <div class="modal fade" id="staticBackdrop_483" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                                <div class="modal fade" id="staticBackdrop1_{{ admin_user.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                                     <div class="modal-dialog modal-dialog-centered confirmation-modal">
                                                                         <div class="modal-content">
                                                                     
@@ -146,11 +147,11 @@
 
                                                             <form class="action-btn-dlt" action="{% url 'account:delete_user' id=user.id %}" method="post">  
                                                                 {%csrf_token %}                          
-                                                                <button type="button" data-bs-toggle="modal"data-bs-target="#staticBackdrop">
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop_{{ user.id }}">
                                                                     <i class="fa-regular fa-trash-can"></i>
                                                                 </button>
                                     
-                                                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                                <div class="modal fade" id="staticBackdrop_{{ user.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                                     <div class="modal-dialog modal-dialog-centered confirmation-modal">
                                                                         <div class="modal-content">
                                                                     

@@ -30,5 +30,6 @@ urlpatterns = [
     path('faqs-list', views.all_faqs, name="all_faqs"),
     path('index-faqs', views.index_faq, name="index_faq"),
     path('index-categories', views.index_categories, name="index_categories"),
+    path('anonymous-limit-reached', views.limit_reached,name="limit_reached"),
 
 ]
