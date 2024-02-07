@@ -158,6 +158,15 @@
                                                 </div>
                                                 {% if not complain.complain_category  %}
                                                 <div class="mb-3 col-md-12">
+                                                    <label for="" class="form-label cm">Complain Broad Category</label>
+                                                    <select id="" class="category form-select kit-form-control" name="complain_broad_category">
+                                                        <option value="{{ complain.broad_category.id }}" selected>{{ complain.broad_category }}</option>
+                                                        {% for cc in complain_broad_categories %}
+                                                            <option value="{{ cc.id }}">{{ cc.english_name }}</option>
+                                                          {% endfor %}
+                                                    </select> 
+                                                </div>
+                                                <div class="mb-3 col-md-12">
                                                     <label for="" class="form-label cm">Complain Category</label>
                                                     <select id="" class="category form-select kit-form-control" name="complain_category">
                                                         <option value="" disabled selected>Select Complain Category</option>
@@ -214,6 +223,15 @@
                                                         </select> 
                                                     </div>
                                                     {% if not complain.complain_category %}
+                                                    <div class="mb-3 col-md-12">
+                                                        <label for="" class="form-label cm">Complain Broad Category</label>
+                                                        <select id="" class="category form-select kit-form-control" name="complain_broad_category">
+                                                            <option value="{{ complain.broad_category.id }}" selected>{{ complain.broad_category }}</option>
+                                                            {% for cc in complain_broad_categories %}
+                                                                <option value="{{ cc.id }}">{{ cc.english_name }}</option>
+                                                              {% endfor %}
+                                                        </select> 
+                                                    </div>
                                                     <div class="mb-3 col-md-12">
                                                         <label for="" class="form-label cm">Complain Category</label>
                                                         <select id="category" class="category form-select kit-form-control" name="complain_category">

@@ -83,6 +83,7 @@ def user_dashboard(request):
     }
     return render(request,'dashboard.html',context)
 
+
 #Category and Broad category related Views.
 @is_superadmin
 def create_broad_category(request,id=None):
@@ -113,6 +114,8 @@ def create_broad_category(request,id=None):
     else:
         return render(request,'management/add_broadcategory.html',context)
     
+
+    
 def category_list(request):
     broad_categories=ComplainBroadCategory.objects.all()
     sub_categories=ComplainSubCategory.objects.all()
@@ -123,6 +126,8 @@ def category_list(request):
         'sub_categories': sub_categories
     }
     return render(request,'management/category_list.html',context)
+
+
 @is_superadmin
 def create_category(request,id=None):
     sub_categories=ComplainSubCategory.objects.all()
@@ -167,6 +172,8 @@ def create_category(request,id=None):
             'category':category,
         }
         return render(request,'management/add_category.html',context)
+    
+
 @is_superadmin
 def create_sub_category(request,id=None):
     categories=ComplainCategory.objects.all()
@@ -301,9 +308,9 @@ def anonymous_complain(request):
             html_content = render_to_string('management/mail_template.html',mail_context)
             try:
                 for email in email_lists:
-                    send_notification_mail.delay(email,html_content)
-                messages.info(request,f"<strong>Success!</strong> Your Complain has been registered successfully.<br> Save and search the complain token <Strong>{complain_obj.ticket_no}</strong> for further information.")
+                    send_notification_mail.delay(email,html_content)    
             finally:
+                messages.info(request,f"<strong>Success!</strong> Your Complain has been registered successfully.<br> Save and search the complain token <Strong>{complain_obj.ticket_no}</strong> for further information.")
                 return redirect(reverse('management:index'))
         else:
             additional_context={
@@ -400,12 +407,14 @@ def all_complains(request):
 @login_required
 def view_complain(request,id):
     complain=get_object_or_404(Complain,id=id)
+    complain_broad_categories=ComplainBroadCategory.objects.all()
     complain_categories=ComplainCategory.objects.all()
     complain_reviewers=get_list_or_404(CustomUser, role=2)
     context={
         'complain_categories':complain_categories,
         'complain':complain,
         'complain_reviewers':complain_reviewers,
+        'complain_broad_categories':complain_broad_categories,
     }
     if request.method=='POST':
         if 'forward_button' in request.POST:
@@ -413,10 +422,13 @@ def view_complain(request,id):
             assigned_to=int(request.POST.get('assigned_to',None))
             image=request.FILES.get('communication_image',None)
             if not complain.complain_category:
+                complain_broad_category=int(request.POST.get('complain_broad_category'))
                 complain_category=int(request.POST.get('complain_category',None))
                 complain_sub_category=int(request.POST.get('complain_sub_category',None))
+                complain_broad_category_instance=ComplainBroadCategory.objects.get(id=complain_broad_category)
                 complain_category_instance=ComplainCategory.objects.get(id=complain_category)
                 complain_sub_category_instance=ComplainSubCategory.objects.get(id=complain_sub_category)
+                complain.broad_category=complain_broad_category_instance
                 complain.complain_category=complain_category_instance
                 complain.complain_sub_category=complain_sub_category_instance
             customuser_instance=CustomUser.objects.get(id=assigned_to)
@@ -507,14 +519,11 @@ def search_complain(request):
         
 def index_categories(request):
     broad_categories=ComplainBroadCategory.objects.all()
-    sub_categories=ComplainSubCategory.objects.all()
-    categories = ComplainCategory.objects.all()
     context={
-        'categories':categories,
         'broad_categories':broad_categories,
-        'sub_categories': sub_categories
     }
     return render(request,'management/index_categories.html',context)  
+
 
 def all_faqs(request):
     faqs=FAQ.objects.all()

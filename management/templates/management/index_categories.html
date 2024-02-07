@@ -13,15 +13,7 @@
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="broadCategory-tab" data-bs-toggle="tab" data-bs-target="#broadCategorys"
                                             type="button" role="tab" aria-controls="broadCategorys" aria-selected="true">Broad Category</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="Category-tab" data-bs-toggle="tab" data-bs-target="#Categorys"
-                                            type="button" role="tab" aria-controls="Categorys" aria-selected="false">Category</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="subCategory-tab" data-bs-toggle="tab" data-bs-target="#subCategorys"
-                                            type="button" role="tab" aria-controls="subCategorys" aria-selected="false">Sub-category</button>
-                                    </li>    
+                                    </li>   
                                 </ul>
                             </div>
                             <hr class="main-section-hr">
@@ -50,50 +42,6 @@
                                     </table>
 
                                 </div>
-                                <div class="tab-pane fade" id="Categorys" role="tabpanel" aria-labelledby="Category-tab"
-                                    tabindex="0">
-
-                                    <table id="Category" class="display" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>S. No.</th>
-                                                <th>Category Name English</th>
-                                                <th>Category Name Nepali</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for category in categories %}
-                                            <tr>
-                                                <td>{{ forloop.counter }}</td>
-                                                <td>{{ category.category_name }}</td>
-                                                <td>{{ category.nepali_name }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="tab-pane fade" id="subCategorys" role="tabpanel" aria-labelledby="subCategory-tab"
-                                    tabindex="0">
-                                    <table id="subCategory" class="display" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>S. No.</th>
-                                                <th>Category Name English</th>
-                                                <th>Category Name Nepali</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for sub_category in sub_categories%}
-                                            <tr>
-                                                <td>{{ forloop.counter }}</td>
-                                                <td>{{ sub_category.name }}</td>
-                                                <td>{{ sub_category.nepali_name }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>  
                     </div>
@@ -110,20 +58,6 @@
     <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
     <script>
         $('#broadCategory').dataTable( {
-            dom: 'fBrtpl',
-            lengthMenu: [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, 'All']
-            ],
-        });
-        $('#Category').dataTable( {
-            dom: 'fBrtpl',
-            lengthMenu: [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, 'All']
-            ],
-        });
-        $('#subCategory').dataTable( {
             dom: 'fBrtpl',
             lengthMenu: [
                 [10, 25, 50, 100, -1],

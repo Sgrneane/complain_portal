@@ -27,7 +27,3 @@ class ComplainSerializer(serializers.ModelSerializer):
             representation['pnone_number']=obj.created_by.phone_number
             representation['address']=(obj.created_by.address)
         return representation
-
-
-
-
