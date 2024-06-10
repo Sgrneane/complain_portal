@@ -1,0 +1,7 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/kantggjb/kitgunaso #this is original
+    - /bin/cp -r account $DEPLOYPATH
+    - /bin/cp -r management $DEPLOYPATH
+    - /bin/cp -r nepalmap $DEPLOYPATH
+    - /bin/cp -r static $DEPLOYPATH

@@ -503,7 +503,7 @@ def response(request,id):
 
 def search_complain(request):
     if request.method=='POST':
-        search=request.POST['search']
+        search=request.POST['search'].strip()
         try:
             complain=Complain.objects.get(ticket_no=search)
         except ObjectDoesNotExist:

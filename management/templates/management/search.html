@@ -63,7 +63,7 @@
                     {% if complain.response.exists %}
                     <tr>
                       <td style="width: 25%;"><strong>उजुरीको सम्बोधन</strong></td>
-                      <td>{{ complain.response.response_description }}</td>
+                      <td>{{ complain.response.first.response_description }}</td>
                     </tr>
                     {% endif %}
 
