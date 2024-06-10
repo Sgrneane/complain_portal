@@ -90,27 +90,35 @@ WSGI_APPLICATION = 'FQC.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'complain-portal', 
-        'USER': 'root',
-        'PASSWORD':'',
+        'NAME': 'kantggjb_kitgunaso', 
+        'USER': 'kantggjb_kitgunaso',
+        'PASSWORD':'R=Y*W-%x1n]=',
         'HOST':'localhost',
-        'PORT': '3308',
+        'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
         }
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'complain-portal', 
+#         'USER': 'root',
+#         'PASSWORD':'',
+#         'HOST':'localhost',
+#         'PORT': '3308',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#             'charset': 'utf8mb4',
+#         }
+#     }
+# }
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
